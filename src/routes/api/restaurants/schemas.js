@@ -1,5 +1,3 @@
-const tags = ['restaurant'];
-
 const restaurantProperties = {
   id: { type: 'string' },
   name: { type: 'string' }
@@ -28,6 +26,6 @@ const exportedSchemas = {
   getAllSchema
 };
 
-Object.values(exportedSchemas).forEach(schema => schema.tags = tags);
+Object.values(exportedSchemas).forEach(schema => schema.tags = ['restaurant']);
 
 module.exports = exportedSchemas;
