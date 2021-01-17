@@ -15,10 +15,11 @@ const start = async () => {
 
   // fastify plugins
   await app.register(require('fastify-cors'));
+  await app.register(require('fastify-swagger'), require('./swagger-config'));
   await app.register(require('@now-ims/fastify-firebase'));
 
   // custom plugins
-  await app.register(require('./routes/api/'), { prefix: 'api' });
+  await app.register(require('./routes/api'), { prefix: 'api' });
 
   try {
     await app.listen(APP_PORT);
