@@ -14,9 +14,21 @@ const start = async () => {
   });
 
   // fastify plugins
+  await app.register(require('fastify-env'), {
+    confKey: 'env',
+    dotenv: 'true',
+    schema: {
+      type: 'object',
+      properties: {
+        FIREBASE_CERT_PATH: { type: 'string' }
+      }
+    }
+  });
   await app.register(require('fastify-cors'));
   await app.register(require('fastify-swagger'), require('./swagger-config'));
-  await app.register(require('@now-ims/fastify-firebase'));
+  await app.register(require('@now-ims/fastify-firebase'), {
+    cert: app.env.FIREBASE_CERT_PATH
+  });
 
   // custom plugins
   await app.register(require('./routes/api'), { prefix: 'api' });
