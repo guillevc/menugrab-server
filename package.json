@@ -1,0 +1,27 @@
+{
+  "name": "menugrab-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillevc/menugrab-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guillevc/menugrab-server/issues"
+  },
+  "homepage": "https://github.com/guillevc/menugrab-server#readme",
+  "dependencies": {
+    "@now-ims/fastify-firebase": "^1.1.2",
+    "fastify": "^3.10.1",
+    "fastify-cors": "^5.1.0",
+    "fastify-swagger": "^3.5.0",
+    "pino-pretty": "^4.3.0"
+  }
+}
