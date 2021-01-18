@@ -1,15 +1,26 @@
-const restaurantProperties = {
-  id: { type: 'string' },
-  name: { type: 'string' }
+const coordinatesProperties = {
+  latitude: { type: 'number' },
+  longitude: { type: 'number' }
 };
 
-const getAllSchema = {
+const restaurantProperties = {
+  id: { type: 'string' },
+  name: { type: 'string' },
+  imageURL: { type: 'string' },
+  coordinates: {
+    type: 'object',
+    properties: coordinatesProperties
+  },
+  acceptingOrderTypes: {
+    type: 'array',
+    items: { type: 'string' }
+  }
+};
+
+const getNearbySchema = {
   querystring: {
     type: 'object',
-    properties: {
-      latitude: { type: 'number' },
-      longitude: { type: 'number' }
-    }
+    properties: coordinatesProperties
   },
   response: {
     200: {
@@ -23,7 +34,7 @@ const getAllSchema = {
 };
 
 const exportedSchemas = {
-  getAllSchema
+  getNearbySchema
 };
 
 Object.values(exportedSchemas).forEach(schema => schema.tags = ['restaurant']);
