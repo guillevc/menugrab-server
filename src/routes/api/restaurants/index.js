@@ -1,12 +1,12 @@
 const { getAllSchema } = require('./schemas');
 
-async function routes(fastify, options) {
+const routes = async (app, options) => {
 
   // getAll
-  fastify.get('/', { schema: getAllSchema }, async (request, reply) => {
+  app.get('/', { schema: getAllSchema }, async (request, reply) => {
     return [];
   })
 
-}
+};
 
-module.exports = routes
+module.exports = routes;

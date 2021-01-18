@@ -14,6 +14,7 @@ const start = async () => {
   });
 
   // fastify plugins
+  await app.register(require('fastify-sensible'));
   await app.register(require('fastify-env'), {
     confKey: 'env',
     dotenv: 'true',
@@ -31,6 +32,7 @@ const start = async () => {
   });
 
   // custom plugins
+  await app.register(require('./plugins/firebase-auth-plugin'));
   await app.register(require('./routes/api'), { prefix: 'api' });
 
   try {
