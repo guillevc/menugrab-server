@@ -1,5 +1,4 @@
 const Fastify = require('fastify');
-const APP_PORT = 3000;
 
 // Loading order of your plugins
 // └── plugins (from the Fastify ecosystem)
@@ -21,7 +20,8 @@ const start = async () => {
     schema: {
       type: 'object',
       properties: {
-        FIREBASE_CERT_FILE_BASE64: { type: 'string' }
+        FIREBASE_CERT_FILE_BASE64: { type: 'string' },
+        PORT: { type: 'number' }
       },
       required: ['FIREBASE_CERT_FILE_BASE64']
     }
@@ -37,7 +37,7 @@ const start = async () => {
   await app.register(require('./routes/api'), { prefix: 'api' });
 
   try {
-    await app.listen(APP_PORT);
+    await app.listen(app.env.PORT || 3000);
   } catch (error) {
     app.log.error(error);
     process.exit(1);
