@@ -21,14 +21,15 @@ const start = async () => {
     schema: {
       type: 'object',
       properties: {
-        FIREBASE_CERT_PATH: { type: 'string' }
-      }
+        FIREBASE_CERT_FILE_BASE64: { type: 'string' }
+      },
+      required: ['FIREBASE_CERT_FILE_BASE64']
     }
   });
   await app.register(require('fastify-cors'));
   await app.register(require('fastify-swagger'), require('./swagger-config'));
   await app.register(require('@now-ims/fastify-firebase'), {
-    cert: app.env.FIREBASE_CERT_PATH
+    cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
   });
 
   // custom plugins
