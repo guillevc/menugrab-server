@@ -37,7 +37,7 @@ const start = async () => {
   await app.register(require('./routes/api'), { prefix: 'api' });
 
   try {
-    await app.listen(app.env.PORT || 3000);
+    await app.listen(app.env.PORT || 3000, '0.0.0.0');
   } catch (error) {
     app.log.error(error);
     process.exit(1);
