@@ -33,16 +33,14 @@ const routes = async (app, options) => {
     let categories = [];
     await categoriesSnapshot.docs.reduce(async (memo, categoryDoc) => {
       await memo;
+
       const categoryName = categoryDoc.data().name;
+
       const menuItemsRef = categoriesRef.doc(categoryDoc.id).collection('menuItems');
       const menuItemsSnapshot = await menuItemsRef.get();
+      const menuItems = menuItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      let items = []
-      menuItemsSnapshot.docs.forEach(menuItemDoc => {
-        items.push({ id: menuItemDoc.id, ...menuItemDoc.data() });
-      });
-
-      categories.push({ name: categoryName, menuItems: items });
+      categories.push({ name: categoryName, menuItems });
     }, undefined);
 
     return categories;
