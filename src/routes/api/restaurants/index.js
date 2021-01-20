@@ -26,6 +26,10 @@ const routes = async (app, options) => {
     const categoriesRef =  app.firebase.firestore().collection('restaurants').doc(restaurantId).collection('menuItemCategories');
     const categoriesSnapshot = await categoriesRef.get();
 
+    if (categoriesSnapshot.docs?.length === 0) {
+      throw app.httpErrors.notFound();
+    }
+
     let categories = [];
     await categoriesSnapshot.docs.reduce(async (memo, categoryDoc) => {
       await memo;
