@@ -30,7 +30,7 @@ const routes = async (app, options) => {
       throw app.httpErrors.notFound();
     }
 
-    let categories = [];
+    let menuItemCategories = [];
     await categoriesSnapshot.docs.reduce(async (memo, categoryDoc) => {
       await memo;
 
@@ -40,10 +40,10 @@ const routes = async (app, options) => {
       const menuItemsSnapshot = await menuItemsRef.get();
       const menuItems = menuItemsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      categories.push({ name: categoryName, menuItems });
+      menuItemCategories.push({ name: categoryName, menuItems });
     }, undefined);
 
-    return categories;
+    return { menuItemCategories };
   });
 
 };

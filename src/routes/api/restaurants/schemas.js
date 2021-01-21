@@ -48,6 +48,13 @@ const menuItemCategoryProperties = {
   }
 };
 
+const menuProperties = {
+  menuItemCategories: {
+    type: 'array',
+    properties: menuItemCategoryProperties
+  }
+}
+
 const getRestaurantMenuSchema = {
   params: {
     type: 'object',
@@ -58,11 +65,8 @@ const getRestaurantMenuSchema = {
   },
   response: {
     200: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: menuItemCategoryProperties
-      }
+      type: 'object',
+      properties: menuProperties
     }
   }
 };
