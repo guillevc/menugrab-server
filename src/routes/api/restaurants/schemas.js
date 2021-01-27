@@ -14,7 +14,8 @@ const restaurantProperties = {
   acceptingOrderTypes: {
     type: 'array',
     items: { type: 'string' }
-  }
+  },
+  distance: { type: 'number' }
 };
 
 const getNearbyRestaurantsSchema = {

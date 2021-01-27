@@ -1,3 +1,5 @@
+const { getDistance } = require('../../../utils/distance');
+
 const {
   getNearbyRestaurantsSchema,
   getRestaurantMenuSchema
@@ -10,13 +12,14 @@ const routes = async (app, options) => {
     const lat = req.query.latitude;
     const long = req.query.longitude;
 
-    if (lat && long) {
-      // TODO: find nearby
-    }
-
-    const restaurantsRef =  app.firebase.firestore().collection('restaurants');
-    const restaurantsSnapshot = await restaurantsRef.get();
-    return restaurantsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const restaurantsSnapshot = await app.firebase.firestore().collection('restaurants').get();
+    return restaurantsSnapshot.docs.map(doc => {
+      const restaurant = { id: doc.id, ...doc.data() };
+      if (lat && long) {
+        restaurant.distance = getDistance(lat, long, restaurant.coordinates.latitude, restaurant.coordinates.longitude);
+      }
+      return restaurant;
+    });
   });
 
   // getRestaurantMenu
