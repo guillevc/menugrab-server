@@ -1,3 +1,5 @@
+// https://github.com/manuelbieh/geolib
+
 const EARTH_RADIUS = 6378137;
 
 const robustAcos = value => value > 1 ? 1 : value < -1 ? -1 : value;

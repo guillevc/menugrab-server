@@ -1,22 +1,8 @@
-const coordinatesProperties = {
-  latitude: { type: 'number' },
-  longitude: { type: 'number' }
-};
-
-const restaurantProperties = {
-  id: { type: 'string' },
-  name: { type: 'string' },
-  imageURL: { type: 'string' },
-  coordinates: {
-    type: 'object',
-    properties: coordinatesProperties
-  },
-  acceptingOrderTypes: {
-    type: 'array',
-    items: { type: 'string' }
-  },
-  distance: { type: 'number' }
-};
+const {
+  coordinatesProperties,
+  restaurantProperties,
+  menuItemProperties
+} = require('../shared/properties');
 
 const getNearbyRestaurantsSchema = {
   querystring: {
@@ -32,13 +18,6 @@ const getNearbyRestaurantsSchema = {
       }
     }
   }
-};
-
-const menuItemProperties = {
-  id: { type: 'string' },
-  name: { type: 'string' },
-  description: { type: 'string' },
-  price: { type: 'number' }
 };
 
 const menuItemCategoryProperties = {

@@ -1,9 +1,7 @@
 const apiRoutes = async (app, options) => {
-  app.register(require('./auth'), { prefix: 'auth' });
   app.register(require('./restaurants'), { prefix: 'restaurants' });
-  app.get('/health', async (request, reply) => {
-    return { hello: 'world' };
-  });
+  app.register(require('./orders'), { prefix: 'orders' });
+  app.register(require('./users'), { prefix: 'users' });
 };
 
 module.exports = apiRoutes;
