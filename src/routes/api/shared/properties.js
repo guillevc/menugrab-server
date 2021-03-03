@@ -25,8 +25,25 @@ const menuItemProperties = {
   price: { type: 'number' }
 };
 
+const orderProperties = {
+  orderId: { type: 'string' },
+  date: { type: 'string' },
+  restaurant: {
+    type: 'object',
+    properties: restaurantProperties
+  },
+  menuItems: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: menuItemProperties
+    }
+  }
+};
+
 module.exports = {
   coordinatesProperties,
   restaurantProperties,
-  menuItemProperties
+  menuItemProperties,
+  orderProperties
 }

@@ -33,14 +33,20 @@ const routes = async (app, options) => {
       menuItems: fetchedMenuItemsWithQuantity,
       date: firebase.firestore.Timestamp.now()
     };
-    const res = await ordersRef.doc().set(newOrderData);
-    return res;
+    await ordersRef.doc().set(newOrderData);
+    return newOrderData;
   });
 
   // getOrder
-  // app.get('/:orderId', { schema: getOrderSchema }, async (req, reply) => {
-  
-  // });
+  app.get('/:orderId', { schema: getOrderSchema }, async (req, reply) => {
+    const { orderId } = req.params;
+    const orderSnapshot = app.firebase.firestore().collection('orders').doc(orderId);
+    const orderDoc = await orderSnapshot.get();
+    return {
+      id: orderDoc.id,
+      ...orderDoc.data()
+    }
+  });
 
 };
 

@@ -1,4 +1,4 @@
-const { restaurantProperties, menuItemProperties } = require('../shared/properties'); 
+const { orderProperties } = require('../shared/properties'); 
 
 const getUserOrdersSchema = {
   params: {
@@ -13,16 +13,7 @@ const getUserOrdersSchema = {
       type: 'array',
       items: {
         type: 'object',
-        properties: {
-          restaurant: {
-            type: 'object',
-            properties: restaurantProperties
-          },
-          menuItems: {
-            type: 'array',
-            properties: menuItemProperties
-          }
-        }
+        properties: orderProperties
       }
     }
   }

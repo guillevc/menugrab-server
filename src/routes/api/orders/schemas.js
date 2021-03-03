@@ -1,6 +1,5 @@
 const {
-  menuItemProperties,
-  restaurantProperties
+  orderProperties
 } = require('../shared/properties');
 
 const { OrderType } = require('../shared/enums');
@@ -27,6 +26,12 @@ const createOrderSchema = {
       }
     },
     required: ['restaurantId', 'orderType', 'menuItems']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: orderProperties
+    }
   }
 };
 
@@ -41,21 +46,10 @@ const getOrderSchema = {
   response: {
     200: {
       type: 'object',
-      properties: {
-        orderId: { type: 'string' },
-        date: { type: 'string' },
-        restaurant: {
-          type: 'object',
-          properties: restaurantProperties
-        },
-        menuItems: {
-          type: 'array',
-          items: menuItemProperties
-        }
-      }
+      properties: orderProperties
     }
   }
-}
+};
 
 const exportedSchemas = {
   createOrderSchema,

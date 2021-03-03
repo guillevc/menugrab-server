@@ -8,12 +8,12 @@ const routes = async (app, options) => {
   app.get('/:userId/orders', { schema: getUserOrdersSchema/*, preValidation: [app.requireFirebaseAuth] */ }, async (req, reply) => {
     const { userId } = req.params;
 
-    if (userId !== app.user.uid) {
-      throw app.httpErrorrs.forbidden();
+    if (userId !== app.user?.uid) {
+      throw app.httpErrors.forbidden();
     }
 
     const ordersRef = app.firebase.firestore().collection('orders');
-    const ordersSnapshot = await ordersRef.where('userId', '==', userId);
+    const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
     return ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // TODO: fetch restaurant data
   });
 
