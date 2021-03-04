@@ -1,8 +1,8 @@
-const {
-  getUserOrdersSchema
-} = require('./schemas');
+const { OrdersService } = require('../../../services/orders');
+const { getUserOrdersSchema } = require('./schemas');
 
 const routes = async (app, options) => {
+  const ordersService = new OrdersService(app);
 
   // getUserOrders
   app.get('/:userId/orders', { schema: getUserOrdersSchema/*, preValidation: [app.requireFirebaseAuth] */ }, async (req, reply) => {
@@ -12,11 +12,8 @@ const routes = async (app, options) => {
       throw app.httpErrors.forbidden();
     }
 
-    const ordersRef = app.firebase.firestore().collection('orders');
-    const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
-    return ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // TODO: fetch restaurant data
+    return await ordersService.getAllByUser(userId);
   });
-
 };
 
 module.exports = routes;
