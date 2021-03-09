@@ -5,8 +5,17 @@ class RestaurantsService {
     this.app = app;
   }
 
+  async findOne(restaurantId) {
+    const restaurantSnapshot = this.app.firebase.firestore().collection('restaurants').doc(restaurantId);
+    const restaurantDoc = await restaurantSnapshot.get();
+    return {
+      id: restaurantDoc.id,
+      ...restaurantDoc.data()
+    }
+  }
+
   async findAllNearby(lat, long) {
-    const restaurantsSnapshot = await app.firebase.firestore().collection('restaurants').get();
+    const restaurantsSnapshot = await this.app.firebase.firestore().collection('restaurants').get();
     return restaurantsSnapshot.docs.map(doc => {
       const restaurant = { id: doc.id, ...doc.data() };
       if (lat && long) {
@@ -17,11 +26,11 @@ class RestaurantsService {
   }
 
   async findMenu(restaurantId) {
-    const categoriesRef =  app.firebase.firestore().collection('restaurants').doc(restaurantId).collection('menuItemCategories');
+    const categoriesRef = this.app.firebase.firestore().collection('restaurants').doc(restaurantId).collection('menuItemCategories');
     const categoriesSnapshot = await categoriesRef.get();
 
     if (categoriesSnapshot.docs?.length === 0) {
-      throw app.httpErrors.notFound();
+      throw this.app.httpErrors.notFound();
     }
 
     let menuItemCategories = [];

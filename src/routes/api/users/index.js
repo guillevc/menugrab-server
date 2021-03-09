@@ -8,9 +8,9 @@ const routes = async (app, options) => {
   app.get('/:userId/orders', { schema: getUserOrdersSchema/*, preValidation: [app.requireFirebaseAuth] */ }, async (req, reply) => {
     const { userId } = req.params;
 
-    if (userId !== app.user?.uid) {
-      throw app.httpErrors.forbidden();
-    }
+    // if (userId !== app.user?.uid) {
+    //   throw app.httpErrors.forbidden();
+    // }
 
     return await ordersService.getAllByUser(userId);
   });

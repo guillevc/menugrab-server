@@ -6,7 +6,7 @@ const {
 } = require('./schemas');
 
 const routes = async (app, options) => {
-  const orderService = new OrdersService()
+  const orderService = new OrdersService(app)
 
   // createOrder
   app.post('/', { schema: createOrderSchema/*, preValidation: [app.requireFirebaseAuth] */}, async (req, reply) => {

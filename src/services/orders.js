@@ -1,12 +1,14 @@
 const { OrderState } = require('../shared/enums')
+const { RestaurantsService } = require('./restaurants');
 
 class OrdersService {
   constructor(app) {
     this.app = app;
+    this.restaurantsService = new RestaurantsService(app);
   }
 
   async create(order, userId) {
-    const menuItemsRef = app.firebase.firestore().collectionGroup('menuItems');
+    const menuItemsRef = this.app.firebase.firestore().collectionGroup('menuItems');
     const fetchedMenuItemsWithQuantity = await order.menuItems.reduce(async (acc, reqMenuItem) => {
       const fetchedMenuItem = await menuItemsRef.where('id', '==', reqMenuItem.menuItemId).limit(1).get();
       const fetchedMenuItemDoc = fetchedMenuItem.docs[0];
@@ -21,7 +23,7 @@ class OrdersService {
       }
     }, []);
 
-    const ordersRef = app.firebase.firestore().collection('orders');
+    const ordersRef = this.app.firebase.firestore().collection('orders');
     const newOrderData = {
       userId,
       restaurantId: order.restaurantId,
@@ -35,7 +37,7 @@ class OrdersService {
   }
 
   async getOne(orderId) {
-    const orderSnapshot = app.firebase.firestore().collection('orders').doc(orderId);
+    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
     const orderDoc = await orderSnapshot.get();
     return {
       id: orderDoc.id,
@@ -46,7 +48,22 @@ class OrdersService {
   async getAllByUser(userId) {
     const ordersRef = this.app.firebase.firestore().collection('orders');
     const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
-    return ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // TODO: fetch restaurant data
+    let ordersWithRestaurant = []
+    await ordersSnapshot.docs.reduce(async (memo, orderDoc) => {
+      await memo;
+      const order = {
+        orderId: orderDoc.id,
+        ...orderDoc.data()
+      }
+      const restaurant = await this.restaurantsService.findOne(order.restaurantId);
+      if (restaurant) {
+        ordersWithRestaurant.push({
+          ...order,
+          restaurant
+        });
+      }
+    }, undefined);
+    return ordersWithRestaurant;
   }
 }
 
