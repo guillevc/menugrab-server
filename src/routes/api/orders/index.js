@@ -1,51 +1,23 @@
 const firebase = require('firebase-admin');
-
+const { OrdersService } = require('../../../services/orders');
 const {
   createOrderSchema,
   getOrderSchema
 } = require('./schemas');
 
 const routes = async (app, options) => {
+  const orderService = new OrdersService()
 
   // createOrder
   app.post('/', { schema: createOrderSchema/*, preValidation: [app.requireFirebaseAuth] */}, async (req, reply) => {
-    const menuItemsRef = app.firebase.firestore().collectionGroup('menuItems');
-    console.log(req.body.menuItems);
-    const fetchedMenuItemsWithQuantity = await req.body.menuItems.reduce(async (acc, reqMenuItem) => {
-      const fetchedMenuItem = await menuItemsRef.where('id', '==', reqMenuItem.menuItemId).limit(1).get();
-      const fetchedMenuItemDoc = fetchedMenuItem.docs[0];
-      if (fetchedMenuItemDoc) {
-        return acc.concat([{
-          id: fetchedMenuItemDoc.id,
-          quantity: reqMenuItem.quantity,
-          ...fetchedMenuItemDoc.data()
-        }]);
-      } else {
-        return acc;
-      }
-    }, []);
-
-    const ordersRef = app.firebase.firestore().collection('orders');
-    const newOrderData = {
-      // userId: req.user.uid,
-      restaurantId: req.body.restaurantId,
-      orderType: req.body.orderType,
-      menuItems: fetchedMenuItemsWithQuantity,
-      date: firebase.firestore.Timestamp.now()
-    };
-    await ordersRef.doc().set(newOrderData);
-    return newOrderData;
+    const { userId } = req.params;
+    return orderService.create(req.body, userId)
   });
 
   // getOrder
   app.get('/:orderId', { schema: getOrderSchema }, async (req, reply) => {
     const { orderId } = req.params;
-    const orderSnapshot = app.firebase.firestore().collection('orders').doc(orderId);
-    const orderDoc = await orderSnapshot.get();
-    return {
-      id: orderDoc.id,
-      ...orderDoc.data()
-    }
+    return orderService.getOne(orderId)
   });
 
 };
