@@ -1,7 +1,5 @@
-const {
-  orderProperties
-} = require('../shared/properties');
-const { OrderType } = require('../shared/enums');
+const { orderProperties } = require('../../../shared/properties');
+const { OrderType } = require('../../../shared/enums');
 
 const createOrderSchema = {
   body: {

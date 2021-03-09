@@ -2,7 +2,7 @@ const {
   coordinatesProperties,
   restaurantProperties,
   menuItemProperties
-} = require('../shared/properties');
+} = require('../../../shared/properties');
 
 const getNearbyRestaurantsSchema = {
   querystring: {

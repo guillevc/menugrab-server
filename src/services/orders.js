@@ -1,3 +1,5 @@
+const { OrderState } = require('../shared/enums')
+
 class OrdersService {
   constructor(app) {
     this.app = app;
@@ -25,7 +27,8 @@ class OrdersService {
       restaurantId: order.restaurantId,
       orderType: order.orderType,
       menuItems: fetchedMenuItemsWithQuantity,
-      date: firebase.firestore.Timestamp.now()
+      date: firebase.firestore.Timestamp.now(),
+      orderState: OrderState.pending
     };
     await ordersRef.doc().set(newOrderData);
     return newOrderData;

@@ -1,4 +1,4 @@
-const { orderProperties } = require('../shared/properties'); 
+const { orderProperties } = require('../../../shared/properties');
 
 const getUserOrdersSchema = {
   params: {

@@ -1,3 +1,5 @@
+const { OrderType, OrderState } = require('./enums');
+
 const coordinatesProperties = {
   latitude: { type: 'number' },
   longitude: { type: 'number' }
@@ -28,6 +30,14 @@ const menuItemProperties = {
 const orderProperties = {
   orderId: { type: 'string' },
   date: { type: 'string' },
+  orderType: {
+    type: 'string',
+    enum: Object.values(OrderType)
+  },
+  orderState: {
+    type: 'string',
+    enum: Object.values(OrderState)
+  },
   restaurant: {
     type: 'object',
     properties: restaurantProperties

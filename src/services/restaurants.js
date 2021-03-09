@@ -1,4 +1,4 @@
-const { getDistance } = require('../utils/distance');
+const { getDistance } = require('../shared/distance');
 
 class RestaurantsService {
   constructor(app) {
