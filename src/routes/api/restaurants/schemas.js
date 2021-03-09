@@ -17,7 +17,8 @@ const getNearbyRestaurantsSchema = {
         properties: restaurantProperties
       }
     }
-  }
+  },
+  tags: ['restaurants']
 };
 
 const menuItemCategoryProperties = {
@@ -48,14 +49,11 @@ const getRestaurantMenuSchema = {
       type: 'object',
       properties: menuProperties
     }
-  }
+  },
+  tags: ['restaurants']
 };
 
-const exportedSchemas = {
+module.exports = {
   getNearbyRestaurantsSchema,
   getRestaurantMenuSchema
 };
-
-Object.values(exportedSchemas).forEach(schema => schema.tags = ['restaurant']);
-
-module.exports = exportedSchemas;

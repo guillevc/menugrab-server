@@ -1,7 +1,6 @@
 const {
   orderProperties
 } = require('../shared/properties');
-
 const { OrderType } = require('../shared/enums');
 
 const createOrderSchema = {
@@ -32,7 +31,8 @@ const createOrderSchema = {
       type: 'object',
       properties: orderProperties
     }
-  }
+  },
+  tags: ['orders']
 };
 
 const getOrderSchema = {
@@ -48,14 +48,11 @@ const getOrderSchema = {
       type: 'object',
       properties: orderProperties
     }
-  }
+  },
+  tags: ['orders']
 };
 
-const exportedSchemas = {
+module.exports = {
   createOrderSchema,
   getOrderSchema
 };
-
-Object.values(exportedSchemas).forEach(schema => schema.tags = ['order']);
-
-module.exports = exportedSchemas;

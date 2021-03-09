@@ -3,8 +3,8 @@ module.exports = {
   exposeRoute: true,
   swagger: {
     info: {
-      title: 'menugrab API',
-      description: 'docs',
+      title: 'Menugrab API',
+      description: '',
       version: '0.1.0'
     },
     externalDocs: {
@@ -15,8 +15,9 @@ module.exports = {
     consumes: ['application/json'],
     produces: ['application/json'],
     tags: [
-      { name: 'user', description: 'User related end-points' },
-      { name: 'restaurant', description: 'Restaurant related end-points' }
+      { name: 'users', description: 'User related end-points' },
+      { name: 'restaurants', description: 'Restaurant related end-points' },
+      { name: 'orders', description: 'Order related end-points' }
     ]
   }
 };

@@ -16,14 +16,10 @@ const getUserOrdersSchema = {
         properties: orderProperties
       }
     }
-  }
+  },
+  tags: ['users', 'orders']
 };
 
-const exportedSchemas = {
+module.exports = {
   getUserOrdersSchema
 };
-
-Object.values(exportedSchemas).forEach(schema => schema.tags = ['user']);
-
-module.exports = exportedSchemas;
-
