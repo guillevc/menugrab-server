@@ -34,7 +34,7 @@ class OrdersService {
     return newOrderData;
   }
 
-  async getOne(orderId) {
+  async findOne(orderId) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
     const orderDoc = await orderSnapshot.get();
     return {
@@ -43,7 +43,7 @@ class OrdersService {
     }
   }
 
-  async getAllByUser(userId) {
+  async findAllByUser(userId) {
     const ordersRef = this.app.firebase.firestore().collection('orders');
     const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
     let ordersWithRestaurant = []
