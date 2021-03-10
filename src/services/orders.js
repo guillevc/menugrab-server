@@ -1,10 +1,8 @@
 const { OrderState } = require('../shared/enums')
-const { RestaurantsService } = require('./restaurants');
 
 class OrdersService {
   constructor(app) {
     this.app = app;
-    this.restaurantsService = new RestaurantsService(app);
   }
 
   async create(order, userId) {
@@ -55,7 +53,7 @@ class OrdersService {
         orderId: orderDoc.id,
         ...orderDoc.data()
       }
-      const restaurant = await this.restaurantsService.findOne(order.restaurantId);
+      const restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
       if (restaurant) {
         ordersWithRestaurant.push({
           ...order,
@@ -67,4 +65,4 @@ class OrdersService {
   }
 }
 
-module.exports = { OrdersService };
+module.exports = OrdersService;

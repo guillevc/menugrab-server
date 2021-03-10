@@ -32,8 +32,16 @@ const start = async () => {
     cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
   });
 
+  // inject/decorate with persistance services
+  const RestaurantsService = require('./services/restaurants');
+  await app.decorate('restaurantsService', new RestaurantsService(app));
+  const OrdersService = require('./services/orders');
+  await app.decorate('ordersService', new OrdersService(app));
+
   // custom plugins
   await app.register(require('./plugins/firebase-auth-plugin'));
+
+  // routes service
   await app.register(require('./routes/api'), { prefix: 'api' });
 
   try {

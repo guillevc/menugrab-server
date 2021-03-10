@@ -50,4 +50,4 @@ class RestaurantsService {
   }
 }
 
-module.exports = { RestaurantsService };
+module.exports = RestaurantsService;
