@@ -27,6 +27,14 @@ const menuItemProperties = {
   price: { type: 'number' }
 };
 
+const orderItemProperties = {
+  quantity: { type: 'number' },
+  menuItems: {
+    type: 'object',
+    properties: menuItemProperties
+  }
+};
+
 const orderProperties = {
   id: { type: 'string' },
   date: { type: 'string' },
@@ -42,12 +50,9 @@ const orderProperties = {
     type: 'object',
     properties: restaurantProperties
   },
-  menuItems: {
+  orderItems: {
     type: 'array',
-    items: {
-      type: 'object',
-      properties: menuItemProperties
-    }
+    items: orderItemProperties
   }
 };
 

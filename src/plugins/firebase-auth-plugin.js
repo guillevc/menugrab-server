@@ -23,6 +23,9 @@ const plugin = async (app, options, next) => {
       done(app.httpErrors.unauthorized(error.message));
     }
 
+    console.log("idToken", idToken);
+    // console.log("decodedToken.uid", decodedToken.uid);
+
     request.user = decodedToken;
   });
 };

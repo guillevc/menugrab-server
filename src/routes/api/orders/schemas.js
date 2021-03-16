@@ -10,7 +10,7 @@ const createOrderSchema = {
         type: 'string',
         enum: Object.values(OrderType)
       },
-      menuItems: {
+      items: {
         type: 'array',
         items: {
           type: 'object',
@@ -22,7 +22,7 @@ const createOrderSchema = {
         }
       }
     },
-    required: ['restaurantId', 'orderType', 'menuItems']
+    required: ['restaurantId', 'orderType', 'items']
   },
   response: {
     200: {
