@@ -8,7 +8,8 @@ const orderStatePrefix = 'ORDER_STATE_'
 const OrderState = {
   pending: `${orderStatePrefix}PENDING`,
   accepted: `${orderStatePrefix}ACCEPTED`,
-  completed: `${orderStatePrefix}COMPLETED`
+  completed: `${orderStatePrefix}COMPLETED`,
+  canceled: `${orderStatePrefix}CANCELED`
 }
 
 module.exports = { OrderType, OrderState };
