@@ -1,4 +1,5 @@
-const { OrderState } = require('../shared/enums')
+const { OrderState } = require('../shared/enums');
+const { timestampToISOStringWithoutMillis } = require('../shared/date');
 
 class OrdersService {
   constructor(app) {
@@ -34,13 +35,15 @@ class OrdersService {
     return newOrderData;
   }
 
-  async findOne(orderId) {
-    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
+  async findOne(id) {
+    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(id);
     const orderDoc = await orderSnapshot.get();
-    return {
+    const order = {
       id: orderDoc.id,
       ...orderDoc.data()
-    }
+    };
+    order.date = timestampToISOStringWithoutMillis(order.date);
+    return order;
   }
 
   async findAllByUser(userId) {
@@ -50,9 +53,10 @@ class OrdersService {
     await ordersSnapshot.docs.reduce(async (memo, orderDoc) => {
       await memo;
       const order = {
-        orderId: orderDoc.id,
+        id: orderDoc.id,
         ...orderDoc.data()
       }
+      order.date = timestampToISOStringWithoutMillis(order.date);
       const restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
       if (restaurant) {
         ordersWithRestaurant.push({
@@ -61,6 +65,7 @@ class OrdersService {
         });
       }
     }, undefined);
+    console.log(ordersWithRestaurant);
     return ordersWithRestaurant;
   }
 }

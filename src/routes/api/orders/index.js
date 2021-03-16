@@ -11,9 +11,9 @@ const routes = async (app, options) => {
   });
 
   // getOrder
-  app.get('/:orderId', { schema: getOrderSchema }, async (req, reply) => {
-    const { orderId } = req.params;
-    return await app.orderService.findOne(orderId);
+  app.get('/:id', { schema: getOrderSchema }, async (req, reply) => {
+    const { id } = req.params;
+    return await app.orderService.findOne(id);
   });
 
 };

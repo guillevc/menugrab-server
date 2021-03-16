@@ -37,9 +37,9 @@ const getOrderSchema = {
   params: {
     type: 'object',
     properties: {
-      orderId: { type: 'string' }
+      id: { type: 'string' }
     },
-    required: ['orderId']
+    required: ['id']
   },
   response: {
     200: {

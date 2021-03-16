@@ -28,7 +28,7 @@ const menuItemProperties = {
 };
 
 const orderProperties = {
-  orderId: { type: 'string' },
+  id: { type: 'string' },
   date: { type: 'string' },
   orderType: {
     type: 'string',
