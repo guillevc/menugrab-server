@@ -1,0 +1,1 @@
+![Test](https://github.com/guillevc/menugrab-server/workflows/Test/badge.svg?branch=master)
