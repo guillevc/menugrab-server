@@ -22,16 +22,17 @@ const buildApp = async () => {
       properties: {
         FIREBASE_CERT_FILE_BASE64: { type: 'string' },
         PORT: { type: 'number' }
-      },
-      required: ['FIREBASE_CERT_FILE_BASE64']
+      }
     }
   });
   await app.register(require('fastify-cors'));
   await app.register(require('fastify-healthcheck'));
   await app.register(require('fastify-swagger'), require('./swagger-config'));
-  await app.register(require('@now-ims/fastify-firebase'), {
-    cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
-  });
+  if (app.env.FIREBASE_CERT_FILE_BASE64) {
+    await app.register(require('@now-ims/fastify-firebase'), {
+      cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
+    });
+  }
 
   // inject/decorate with persistance services
   const RestaurantsService = require('./services/restaurants');
