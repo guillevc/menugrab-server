@@ -7,8 +7,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "test": "tap --reporter=list"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,12 @@
     "fastify": "^3.10.1",
     "fastify-cors": "^5.1.0",
     "fastify-env": "^2.1.0",
+    "fastify-healthcheck": "^3.1.0",
     "fastify-sensible": "^3.1.0",
     "fastify-swagger": "^3.5.0",
     "pino-pretty": "^4.3.0"
+  },
+  "devDependencies": {
+    "tap": "^14.11.0"
   }
 }

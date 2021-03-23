@@ -7,7 +7,7 @@ const Fastify = require('fastify');
 // └── hooks
 // └── your services
 
-const start = async () => {
+const buildApp = async () => {
   const app = Fastify({
     logger: { prettyPrint: true }
   });
@@ -27,6 +27,7 @@ const start = async () => {
     }
   });
   await app.register(require('fastify-cors'));
+  await app.register(require('fastify-healthcheck'));
   await app.register(require('fastify-swagger'), require('./swagger-config'));
   await app.register(require('@now-ims/fastify-firebase'), {
     cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
@@ -44,12 +45,7 @@ const start = async () => {
   // routes service
   await app.register(require('./routes/api'), { prefix: 'api' });
 
-  try {
-    await app.listen(app.env.PORT || 3000, '0.0.0.0');
-  } catch (error) {
-    app.log.error(error);
-    process.exit(1);
-  }
+  return app;
 }
 
-start();
+module.exports = { buildApp };
