@@ -21,7 +21,10 @@ const buildApp = async () => {
       type: 'object',
       properties: {
         FIREBASE_CERT_FILE_BASE64: { type: 'string' },
-        PORT: { type: 'number' }
+        PORT: {
+          type: 'number',
+          default: 3000
+        }
       }
     }
   });
