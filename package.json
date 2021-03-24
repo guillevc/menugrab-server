@@ -8,7 +8,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "tap --reporter=list"
+    "test": "npm run lint && tap --reporter=list",
+    "lint": "eslint src/*.js",
+    "lint:fix": "eslint src/*.js --fix"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,30 @@
     "pino-pretty": "^4.3.0"
   },
   "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "tap": "^14.11.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "commonjs": true,
+      "es2021": true,
+      "node": true
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 12
+    },
+    "rules": {
+      "comma-dangle": "off",
+      "global-require": "off"
+    },
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    }
   }
 }

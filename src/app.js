@@ -50,6 +50,6 @@ const buildApp = async () => {
   await app.register(require('./routes/api'), { prefix: 'api' });
 
   return app;
-}
+};
 
 module.exports = { buildApp };
