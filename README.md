@@ -14,7 +14,12 @@ Here are some small implementation details of `menugrab-server`. For a descripti
 - Route-specific protection for authenticated users.
 - Integration with Swagger, which generates API documentation based off of defined routes and schemas. It can be accessed trough the `/docs` route.
 
-## Run locally
+## Requirements
+
+- Node.js v14.x
+- Firebase project for Firestore and Firebase Authentication.
+
+## Quick start
 
 Add your Firebase service account  key JSON file content `base64` encoded as the `FIREBASE_CERT_FILE_BASE64` environment variable. The project uses [fastify-env](https://github.com/fastify/fastify-env), so you can create a `.env` file at the root directory of the project and set environment variables that way.
 
@@ -25,4 +30,4 @@ npm install
 npm start
 ```
 
-Serves on port `3000` by default.
+Serves on port `3000` by default. A different port can be specified through the `PORT` environment variable.
