@@ -14,7 +14,7 @@ Here are some small implementation details of `menugrab-server`. For a descripti
 
 ## Run locally
 
-Add your Firebase service account  key JSON file content `base64` encoded as the `FIREBASE_CERT_FILE_BASE64` environment variable. The project uses [firebase-env](https://github.com/fastify/fastify-env), so you can create a `.env` file at the root of the project and set environment variables that way.
+Add your Firebase service account  key JSON file content `base64` encoded as the `FIREBASE_CERT_FILE_BASE64` environment variable. The project uses [fastify-env](https://github.com/fastify/fastify-env), so you can create a `.env` file at the root directory of the project and set environment variables that way.
 
 Then, simply run:
 ```
