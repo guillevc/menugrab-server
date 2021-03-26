@@ -27,7 +27,7 @@ class RestaurantsService {
 
   async findMenu(restaurantId) {
     const categoriesRef = this.app.firebase.firestore().collection('restaurants').doc(restaurantId).collection('menuItemCategories');
-    const categoriesSnapshot = await categoriesRef.get();
+    const categoriesSnapshot = await categoriesRef.orderBy('order').get();
 
     if (categoriesSnapshot.docs?.length === 0) {
       throw this.app.httpErrors.notFound();
