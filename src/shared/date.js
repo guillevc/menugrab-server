@@ -1,5 +1,5 @@
 const timestampToISOStringWithoutMillis = timestamp => (
-  `${timestamp.toDate().toISOString().split('.').shift()}'Z'`
+  `${timestamp.toDate().toISOString().split('.').shift()}Z`
 );
 
 module.exports = { timestampToISOStringWithoutMillis };
