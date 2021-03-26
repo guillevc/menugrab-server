@@ -3,17 +3,17 @@ const {
   getOrderSchema
 } = require('./schemas');
 
-const routes = async (app, options) => {
+const routes = async (app, _options) => {
   // createOrder
-  app.post('/', { schema: createOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, reply) => {
+  app.post('/', { schema: createOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
     const userId = req.user?.uid;
-    return await app.ordersService.create(req.body, userId);
+    return app.ordersService.create(req.body, userId);
   });
 
   // getOrder
-  app.get('/:id', { schema: getOrderSchema }, async (req, reply) => {
+  app.get('/:id', { schema: getOrderSchema }, async (req, _reply) => {
     const { id } = req.params;
-    return await app.ordersService.findOne(id);
+    return app.ordersService.findOne(id);
   });
 };
 

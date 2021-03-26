@@ -3,17 +3,17 @@ const {
   getRestaurantMenuSchema
 } = require('./schemas');
 
-const routes = async (app, options) => {
+const routes = async (app, _options) => {
   // getNearbyRestaurants
-  app.get('/', { schema: getNearbyRestaurantsSchema }, async (req, reply) => {
+  app.get('/', { schema: getNearbyRestaurantsSchema }, async (req, _reply) => {
     const { latitude, longitude } = req.query;
-    return await app.restaurantsService.findAllNearby(latitude, longitude);
+    return app.restaurantsService.findAllNearby(latitude, longitude);
   });
 
   // getRestaurantMenu
-  app.get('/:restaurantId/menu', { schema: getRestaurantMenuSchema }, async (req, reply) => {
+  app.get('/:restaurantId/menu', { schema: getRestaurantMenuSchema }, async (req, _reply) => {
     const { restaurantId } = req.params;
-    return await app.restaurantsService.findMenu(restaurantId)
+    return app.restaurantsService.findMenu(restaurantId);
   });
 };
 

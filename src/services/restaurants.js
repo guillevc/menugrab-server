@@ -11,7 +11,7 @@ class RestaurantsService {
     return {
       id: restaurantDoc.id,
       ...restaurantDoc.data()
-    }
+    };
   }
 
   async findAllNearby(lat, long) {
@@ -33,7 +33,7 @@ class RestaurantsService {
       throw this.app.httpErrors.notFound();
     }
 
-    let menuItemCategories = [];
+    const menuItemCategories = [];
     await categoriesSnapshot.docs.reduce(async (memo, categoryDoc) => {
       await memo;
 

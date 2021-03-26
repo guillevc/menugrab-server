@@ -9,8 +9,8 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "npm run lint && tap --reporter=list",
-    "lint": "eslint src/*.js",
-    "lint:fix": "eslint src/*.js --fix"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,10 @@
     "fastify-cors": "^5.1.0",
     "fastify-env": "^2.1.0",
     "fastify-healthcheck": "^3.1.0",
+    "fastify-plugin": "^3.0.0",
     "fastify-sensible": "^3.1.0",
     "fastify-swagger": "^3.5.0",
+    "firebase-admin": "^9.5.0",
     "pino-pretty": "^4.3.0"
   },
   "devDependencies": {
@@ -52,7 +54,10 @@
     },
     "rules": {
       "comma-dangle": "off",
-      "global-require": "off"
+      "global-require": "off",
+      "arrow-parens": "off",
+      "max-len": "off",
+      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     },
     "globals": {
       "Atomics": "readonly",

@@ -34,7 +34,7 @@ const menuProperties = {
     type: 'array',
     properties: menuItemCategoryProperties
   }
-}
+};
 
 const getRestaurantMenuSchema = {
   params: {

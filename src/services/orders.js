@@ -1,6 +1,6 @@
+const { firestore } = require('firebase-admin');
 const { OrderState } = require('../shared/enums');
 const { timestampToISOStringWithoutMillis } = require('../shared/date');
-const { firestore } = require('firebase-admin');
 
 class OrdersService {
   constructor(app) {
@@ -21,9 +21,8 @@ class OrdersService {
             ...fetchedMenuItemDoc.data()
           }
         });
-      } else {
-        return acc;
       }
+      return acc;
     }, undefined);
 
     const ordersRef = this.app.firebase.firestore().collection('orders');
@@ -53,13 +52,13 @@ class OrdersService {
   async findAllByUser(userId) {
     const ordersRef = this.app.firebase.firestore().collection('orders');
     const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
-    let ordersWithRestaurant = []
+    const ordersWithRestaurant = [];
     await ordersSnapshot.docs.reduce(async (memo, orderDoc) => {
       await memo;
       const order = {
         id: orderDoc.id,
         ...orderDoc.data()
-      }
+      };
       order.date = timestampToISOStringWithoutMillis(order.date);
       const restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
       if (restaurant) {
