@@ -17,7 +17,8 @@ const restaurantProperties = {
     type: 'array',
     items: { type: 'string' }
   },
-  distance: { type: 'number' }
+  distance: { type: 'number' },
+  address: { type: 'string' }
 };
 
 const menuItemProperties = {
