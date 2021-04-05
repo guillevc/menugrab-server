@@ -7,7 +7,8 @@ const routes = async (app, _options) => {
   // createOrder
   app.post('/', { schema: createOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
     const userId = req.user?.uid;
-    return app.ordersService.create(req.body, userId);
+    const newOrderId = await app.ordersService.create(req.body, userId);
+    return app.ordersService.findOne(newOrderId);
   });
 
   // getOrder

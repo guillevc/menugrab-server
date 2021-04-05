@@ -32,10 +32,10 @@ class OrdersService {
       orderType: order.orderType,
       orderItems,
       date: firestore.Timestamp.now(),
-      orderState: OrderState.pending
+      orderState: OrderState.completed
     };
-    await ordersRef.doc().set(newOrderData);
-    return newOrderData;
+    const newOrderDoc = await ordersRef.add(newOrderData);
+    return newOrderDoc.id;
   }
 
   async findOne(id) {
@@ -46,6 +46,7 @@ class OrdersService {
       ...orderDoc.data()
     };
     order.date = timestampToISOStringWithoutMillis(order.date);
+    order.restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
     return order;
   }
 
