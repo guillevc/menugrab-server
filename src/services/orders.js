@@ -52,7 +52,7 @@ class OrdersService {
 
   async findAllByUser(userId) {
     const ordersRef = this.app.firebase.firestore().collection('orders');
-    const ordersSnapshot = await ordersRef.where('userId', '==', userId).get();
+    const ordersSnapshot = await ordersRef.where('userId', '==', userId).orderBy('date', 'desc').get();
     const ordersWithRestaurant = [];
     await ordersSnapshot.docs.reduce(async (memo, orderDoc) => {
       await memo;
