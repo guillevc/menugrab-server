@@ -21,6 +21,23 @@ const getNearbyRestaurantsSchema = {
   tags: ['restaurants']
 };
 
+const getRestaurantSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' }
+    },
+    required: ['id']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: restaurantProperties
+    }
+  },
+  tags: ['restaurants']
+};
+
 const menuItemCategoryProperties = {
   name: { type: 'string' },
   menuItems: {
@@ -55,5 +72,6 @@ const getRestaurantMenuSchema = {
 
 module.exports = {
   getNearbyRestaurantsSchema,
+  getRestaurantSchema,
   getRestaurantMenuSchema
 };
