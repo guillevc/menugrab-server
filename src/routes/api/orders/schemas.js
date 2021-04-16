@@ -10,6 +10,7 @@ const createOrderSchema = {
         type: 'string',
         enum: Object.values(OrderType)
       },
+      table: { type: 'number' },
       items: {
         type: 'array',
         items: {

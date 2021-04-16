@@ -43,6 +43,7 @@ const orderProperties = {
     type: 'string',
     enum: Object.values(OrderType)
   },
+  table: { type: 'number' },
   orderState: {
     type: 'string',
     enum: Object.values(OrderState)

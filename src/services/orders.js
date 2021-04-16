@@ -30,6 +30,7 @@ class OrdersService {
       userId,
       restaurantId: order.restaurantId,
       orderType: order.orderType,
+      table: order.table,
       orderItems,
       date: firestore.Timestamp.now(),
       orderState: OrderState.completed
