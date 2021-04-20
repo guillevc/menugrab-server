@@ -42,6 +42,8 @@ const buildApp = async () => {
   await app.decorate('restaurantsService', new RestaurantsService(app));
   const OrdersService = require('./services/orders');
   await app.decorate('ordersService', new OrdersService(app));
+  const UsersService = require('./services/users');
+  await app.decorate('usersService', new UsersService(app));
 
   // custom plugins
   await app.register(require('./plugins/firebase-auth-plugin'));

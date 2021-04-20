@@ -26,6 +26,27 @@ const getUserOrdersSchema = {
   tags: ['users', 'orders']
 };
 
+const updateUserFCMTokenSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      userId: { type: 'string' }
+    },
+    required: ['userId']
+  },
+  body: {
+    type: 'object',
+    properties: {
+      fcmToken: {
+        type: 'string'
+      }
+    },
+    required: ['fcmToken']
+  },
+  tags: ['users']
+};
+
 module.exports = {
-  getUserOrdersSchema
+  getUserOrdersSchema,
+  updateUserFCMTokenSchema
 };
