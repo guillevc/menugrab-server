@@ -18,7 +18,11 @@ const restaurantProperties = {
     items: { type: 'string' }
   },
   distance: { type: 'number' },
-  address: { type: 'string' }
+  address: { type: 'string' },
+  isFeatured: {
+    type: 'boolean',
+    default: 'false'
+  }
 };
 
 const menuItemProperties = {
