@@ -26,6 +26,12 @@ const getUserOrdersSchema = {
   tags: ['users', 'orders']
 };
 
+const fcmTokenDTOProperties = {
+  fcmToken: {
+    type: 'string'
+  }
+};
+
 const updateUserFCMTokenSchema = {
   params: {
     type: 'object',
@@ -36,12 +42,13 @@ const updateUserFCMTokenSchema = {
   },
   body: {
     type: 'object',
-    properties: {
-      fcmToken: {
-        type: 'string'
-      }
-    },
+    properties: fcmTokenDTOProperties,
     required: ['fcmToken']
+  },
+  response: {
+    200: {
+      properties: fcmTokenDTOProperties
+    }
   },
   tags: ['users']
 };

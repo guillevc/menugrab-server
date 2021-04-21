@@ -72,6 +72,16 @@ class OrdersService {
     }, undefined);
     return ordersWithRestaurant;
   }
+
+  async updateOrderState(orderId, orderState) {
+    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
+
+    const data = { orderState };
+    await orderSnapshot.set(data, { merge: true });
+
+    // TODO: improve response with errors
+    return data;
+  }
 }
 
 module.exports = OrdersService;

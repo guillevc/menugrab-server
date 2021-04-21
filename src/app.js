@@ -35,6 +35,7 @@ const buildApp = async () => {
     await app.register(require('@now-ims/fastify-firebase'), {
       cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
     });
+    app.firebase.firestore().settings({ ignoreUndefinedProperties: true });
   }
 
   // inject/decorate with persistance services
@@ -44,6 +45,8 @@ const buildApp = async () => {
   await app.decorate('ordersService', new OrdersService(app));
   const UsersService = require('./services/users');
   await app.decorate('usersService', new UsersService(app));
+  const PushNotificationsService = require('./services/push-notifications');
+  await app.decorate('pushNotificationsService', new PushNotificationsService(app));
 
   // custom plugins
   await app.register(require('./plugins/firebase-auth-plugin'));

@@ -3,11 +3,17 @@ class UsersService {
     this.app = app;
   }
 
+  async findFCMTokenByUser(userId) {
+    const userSnapshot = this.app.firebase.firestore().collection('users').doc(userId);
+    const userDoc = await userSnapshot.get();
+    return userDoc.data().fcmToken;
+  }
+
   async updateFCMToken(userId, fcmToken) {
-    const restaurantSnapshot = this.app.firebase.firestore().collection('users').doc(userId);
+    const userSnapshot = this.app.firebase.firestore().collection('users').doc(userId);
 
     const data = { fcmToken };
-    await restaurantSnapshot.set(data);
+    await userSnapshot.set(data, { merge: true });
 
     // TODO: improve response with errors
     return data;

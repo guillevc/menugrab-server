@@ -1,5 +1,5 @@
 const { orderProperties } = require('../../../shared/properties');
-const { OrderType } = require('../../../shared/enums');
+const { OrderType, OrderState } = require('../../../shared/enums');
 
 const createOrderSchema = {
   body: {
@@ -51,7 +51,37 @@ const getOrderSchema = {
   tags: ['orders']
 };
 
+const orderStateDTOProperties = {
+  orderState: {
+    type: 'string',
+    enum: Object.values(OrderState)
+  }
+};
+
+const updateOrderStateSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' }
+    },
+    required: ['id']
+  },
+  body: {
+    type: 'object',
+    properties: orderStateDTOProperties,
+    required: ['orderState']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: orderStateDTOProperties
+    }
+  },
+  tags: ['orders']
+};
+
 module.exports = {
   createOrderSchema,
-  getOrderSchema
+  getOrderSchema,
+  updateOrderStateSchema
 };

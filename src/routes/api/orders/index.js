@@ -1,7 +1,8 @@
 const { OrderType } = require('../../../shared/enums');
 const {
   createOrderSchema,
-  getOrderSchema
+  getOrderSchema,
+  updateOrderStateSchema
 } = require('./schemas');
 
 const routes = async (app, _options) => {
@@ -21,8 +22,19 @@ const routes = async (app, _options) => {
 
   // getOrder
   app.get('/:id', { schema: getOrderSchema }, async (req, _reply) => {
-    const { id } = req.params;
-    return app.ordersService.findOne(id);
+    const { id: orderId } = req.params;
+    return app.ordersService.findOne(orderId);
+  });
+
+  // updateOrderState
+  app.put('/:id/state', { schema: updateOrderStateSchema }, async (req, _reply) => {
+    const { id: orderId } = req.params;
+    const { orderState } = req.body;
+
+    const { userId, restaurant } = await app.ordersService.findOne(orderId);
+    const response = await app.ordersService.updateOrderState(orderId, orderState);
+    app.pushNotificationsService.notifyOrderStateUpdate(userId, orderId, orderState, restaurant.name);
+    return response;
   });
 };
 
