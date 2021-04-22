@@ -11,5 +11,6 @@ const OrderState = {
   completed: `${orderStatePrefix}COMPLETED`,
   canceled: `${orderStatePrefix}CANCELED`
 };
+OrderState.inProgressStates = [OrderState.pending, OrderState.accepted];
 
 module.exports = { OrderType, OrderState };

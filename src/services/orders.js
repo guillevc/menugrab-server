@@ -42,13 +42,8 @@ class OrdersService {
   async findOne(id) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(id);
     const orderDoc = await orderSnapshot.get();
-    const order = {
-      id: orderDoc.id,
-      ...orderDoc.data()
-    };
-    order.date = timestampToISOStringWithoutMillis(order.date);
-    order.restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
-    return order;
+    const orderWithRestaurant = await this._orderWithRestaurantFromDoc(orderDoc);
+    return orderWithRestaurant;
   }
 
   async findAllByUser(userId) {
@@ -57,18 +52,8 @@ class OrdersService {
     const ordersWithRestaurant = [];
     await ordersSnapshot.docs.reduce(async (memo, orderDoc) => {
       await memo;
-      const order = {
-        id: orderDoc.id,
-        ...orderDoc.data()
-      };
-      order.date = timestampToISOStringWithoutMillis(order.date);
-      const restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
-      if (restaurant) {
-        ordersWithRestaurant.push({
-          ...order,
-          restaurant
-        });
-      }
+      const orderWithRestaurant = await this._orderWithRestaurantFromDoc(orderDoc);
+      ordersWithRestaurant.push(orderWithRestaurant);
     }, undefined);
     return ordersWithRestaurant;
   }
@@ -81,6 +66,26 @@ class OrdersService {
 
     // TODO: improve response with errors
     return data;
+  }
+
+  async findCurrentOrderByUser(userId) {
+    const ordersRef = this.app.firebase.firestore().collection('orders');
+    const orderSnapshot = ordersRef
+      .where('userId', '==', userId)
+      .where('orderState', 'in', OrderState.inProgressStates);
+    const orderDoc = (await orderSnapshot.limit(1).get()).docs[0];
+    const orderWithRestaurant = await this._orderWithRestaurantFromDoc(orderDoc);
+    return orderWithRestaurant;
+  }
+
+  async _orderWithRestaurantFromDoc(orderDoc) {
+    const order = {
+      id: orderDoc.id,
+      ...orderDoc.data()
+    };
+    order.date = timestampToISOStringWithoutMillis(order.date);
+    order.restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
+    return order;
   }
 }
 

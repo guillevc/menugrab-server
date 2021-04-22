@@ -1,4 +1,4 @@
-const { getUserOrdersSchema, updateUserFCMTokenSchema } = require('./schemas');
+const { getUserOrdersSchema, getCurrentOrderSchema, updateUserFCMTokenSchema } = require('./schemas');
 
 const routes = async (app, _options) => {
   // getUserOrders
@@ -10,6 +10,17 @@ const routes = async (app, _options) => {
     }
 
     return app.ordersService.findAllByUser(userId);
+  });
+
+  // getCurrentOrder
+  app.get('/:userId/current-order', { schema: getCurrentOrderSchema }, async (req, _reply) => {
+    const { userId } = req.params;
+
+    // if (userId !== req.user?.uid) {
+    //   throw app.httpErrors.forbidden();
+    // }
+
+    return app.ordersService.findCurrentOrderByUser(userId);
   });
 
   // updateUserFCMToken

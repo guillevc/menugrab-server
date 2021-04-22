@@ -1,4 +1,4 @@
-const { orderProperties, restaurantProperties } = require('../../../shared/properties');
+const { orderProperties } = require('../../../shared/properties');
 
 const getUserOrdersSchema = {
   params: {
@@ -13,14 +13,25 @@ const getUserOrdersSchema = {
       type: 'array',
       items: {
         type: 'object',
-        properties: {
-          ...orderProperties,
-          restaurant: {
-            type: 'object',
-            properties: restaurantProperties
-          }
-        }
+        properties: orderProperties
       }
+    }
+  },
+  tags: ['users', 'orders']
+};
+
+const getCurrentOrderSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      userId: { type: 'string' }
+    },
+    required: ['userId']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: orderProperties
     }
   },
   tags: ['users', 'orders']
@@ -55,5 +66,6 @@ const updateUserFCMTokenSchema = {
 
 module.exports = {
   getUserOrdersSchema,
+  getCurrentOrderSchema,
   updateUserFCMTokenSchema
 };
