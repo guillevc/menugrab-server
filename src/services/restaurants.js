@@ -8,6 +8,10 @@ class RestaurantsService {
   async findOne(restaurantId) {
     const restaurantSnapshot = this.app.firebase.firestore().collection('restaurants').doc(restaurantId);
     const restaurantDoc = await restaurantSnapshot.get();
+
+    if (!restaurantDoc.exists) {
+      throw this.app.httpErrors.notFound(`Restaurant with id ${restaurantId} not found`);
+    }
     return {
       id: restaurantDoc.id,
       ...restaurantDoc.data()
@@ -30,7 +34,7 @@ class RestaurantsService {
     const categoriesSnapshot = await categoriesRef.orderBy('order').get();
 
     if (categoriesSnapshot.docs?.length === 0) {
-      throw this.app.httpErrors.notFound();
+      throw this.app.httpErrors.notFound(`Menu not found for restaurant with id ${restaurantId}`);
     }
 
     const menuItemCategories = [];

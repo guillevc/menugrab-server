@@ -52,8 +52,12 @@ class OrdersService {
   async findOne(id) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(id);
     const orderDoc = await orderSnapshot.get();
-    const orderWithRestaurant = await this._orderWithRestaurantFromDoc(orderDoc);
-    return orderWithRestaurant;
+
+    if (!orderDoc.exists) {
+      throw this.app.httpErrors.notFound(`Order with id ${id} not found`);
+    }
+
+    return this._orderWithRestaurantFromDoc(orderDoc);
   }
 
   async findAllByUser(userId) {
@@ -71,11 +75,10 @@ class OrdersService {
   async updateOrderState(orderId, orderState) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
 
-    const data = { orderState };
-    await orderSnapshot.set(data, { merge: true });
+    const newOrderState = { orderState };
+    await orderSnapshot.set(newOrderState, { merge: true });
 
-    // TODO: improve response with errors
-    return data;
+    return newOrderState;
   }
 
   async findCurrentOrderByUser(userId) {
