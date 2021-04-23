@@ -8,6 +8,17 @@ class OrdersService {
   }
 
   async create(order, userId) {
+    // check there isn't already an order in progress
+    const ordersRef = this.app.firebase.firestore().collection('orders');
+    const inProgressOrderSnapshot = ordersRef
+      .where('userId', '==', userId)
+      .where('orderState', 'in', OrderState.inProgressStates);
+    const existingOrderInProgressExists = (await inProgressOrderSnapshot.get()).docs.length > 0;
+
+    if (existingOrderInProgressExists) {
+      throw this.app.httpErrors.conflict('There\'s an order in progress already');
+    }
+
     const menuItemsRef = this.app.firebase.firestore().collectionGroup('menuItems');
     const orderItems = [];
     await order.items.reduce(async (acc, reqMenuItem) => {
@@ -25,7 +36,6 @@ class OrdersService {
       return acc;
     }, undefined);
 
-    const ordersRef = this.app.firebase.firestore().collection('orders');
     const newOrderData = {
       userId,
       restaurantId: order.restaurantId,
@@ -74,8 +84,10 @@ class OrdersService {
       .where('userId', '==', userId)
       .where('orderState', 'in', OrderState.inProgressStates);
     const orderDoc = (await orderSnapshot.limit(1).get()).docs[0];
-    const orderWithRestaurant = await this._orderWithRestaurantFromDoc(orderDoc);
-    return orderWithRestaurant;
+    if (orderDoc) {
+      return this._orderWithRestaurantFromDoc(orderDoc);
+    }
+    throw this.app.httpErrors.notFound('There\'s no order in progress');
   }
 
   async _orderWithRestaurantFromDoc(orderDoc) {
