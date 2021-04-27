@@ -43,7 +43,7 @@ class OrdersService {
       table: order.table,
       orderItems,
       date: firestore.Timestamp.now(),
-      orderState: OrderState.completed
+      orderState: OrderState.pending
     };
     const newOrderDoc = await ordersRef.add(newOrderData);
     return newOrderDoc.id;
