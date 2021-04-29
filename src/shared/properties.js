@@ -15,7 +15,10 @@ const restaurantProperties = {
   },
   acceptingOrderTypes: {
     type: 'array',
-    items: { type: 'string' }
+    items: {
+      type: 'string',
+      enum: Object.values(OrderType)
+    }
   },
   distance: { type: 'number' },
   address: { type: 'string' },
