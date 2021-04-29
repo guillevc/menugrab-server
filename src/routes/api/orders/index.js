@@ -29,10 +29,10 @@ const routes = async (app, _options) => {
   // updateOrderState
   app.put('/:id/state', { schema: updateOrderStateSchema }, async (req, _reply) => {
     const { id: orderId } = req.params;
-    const { orderState } = req.body;
+    const { orderState, completionDate: completionDateAsISOStringWithoutMillis } = req.body;
 
     const { userId, restaurant } = await app.ordersService.findOne(orderId);
-    const response = await app.ordersService.updateOrderState(orderId, orderState);
+    const response = await app.ordersService.updateOrderState(orderId, orderState, completionDateAsISOStringWithoutMillis);
     app.pushNotificationsService.notifyOrderStateUpdate(userId, orderId, orderState, restaurant.name);
     return response;
   });

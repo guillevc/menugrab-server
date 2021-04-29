@@ -55,7 +55,8 @@ const orderStateDTOProperties = {
   orderState: {
     type: 'string',
     enum: Object.values(OrderState)
-  }
+  },
+  completionDate: { type: 'string' }
 };
 
 const updateOrderStateSchema = {

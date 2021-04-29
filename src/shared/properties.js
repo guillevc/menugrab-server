@@ -55,6 +55,7 @@ const orderProperties = {
     type: 'string',
     enum: Object.values(OrderState)
   },
+  completionDate: { type: 'string' },
   restaurant: {
     type: 'object',
     properties: restaurantProperties

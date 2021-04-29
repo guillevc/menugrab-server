@@ -1,6 +1,9 @@
 const { firestore } = require('firebase-admin');
 const { OrderState } = require('../shared/enums');
-const { timestampToISOStringWithoutMillis } = require('../shared/date');
+const {
+  timestampToISOStringWithoutMillis,
+  isoStringWithoutMillisToTimestamp
+} = require('../shared/date');
 
 class OrdersService {
   constructor(app) {
@@ -72,13 +75,14 @@ class OrdersService {
     return ordersWithRestaurant;
   }
 
-  async updateOrderState(orderId, orderState) {
+  async updateOrderState(orderId, orderState, completionDateAsISOStringWithoutMillis) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
-
-    const newOrderState = { orderState };
-    await orderSnapshot.set(newOrderState, { merge: true });
-
-    return newOrderState;
+    const newOrderData = {
+      orderState,
+      completionDate: isoStringWithoutMillisToTimestamp(completionDateAsISOStringWithoutMillis)
+    };
+    await orderSnapshot.set(newOrderData, { merge: true });
+    return { orderState, completionDate: completionDateAsISOStringWithoutMillis };
   }
 
   async findCurrentOrderByUser(userId) {
@@ -99,6 +103,9 @@ class OrdersService {
       ...orderDoc.data()
     };
     order.date = timestampToISOStringWithoutMillis(order.date);
+    if (order.completionDate) {
+      order.completionDate = timestampToISOStringWithoutMillis(order.completionDate);
+    }
     order.restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
     return order;
   }

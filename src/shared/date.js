@@ -1,5 +1,15 @@
+const { firestore } = require('firebase-admin');
+
 const timestampToISOStringWithoutMillis = timestamp => (
   `${timestamp.toDate().toISOString().split('.').shift()}Z`
 );
 
-module.exports = { timestampToISOStringWithoutMillis };
+const isoStringWithoutMillisToTimestamp = isoStringWithoutMillis => {
+  const date = new Date(isoStringWithoutMillis);
+  return firestore.Timestamp.fromDate(date);
+};
+
+module.exports = {
+  timestampToISOStringWithoutMillis,
+  isoStringWithoutMillisToTimestamp
+};
