@@ -4,9 +4,9 @@ const getUserOrdersSchema = {
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' }
+      id: { type: 'string' }
     },
-    required: ['userId']
+    required: ['id']
   },
   response: {
     200: {
@@ -24,9 +24,9 @@ const getCurrentOrderSchema = {
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' }
+      id: { type: 'string' }
     },
-    required: ['userId']
+    required: ['id']
   },
   response: {
     200: {
@@ -47,9 +47,9 @@ const updateUserFCMTokenSchema = {
   params: {
     type: 'object',
     properties: {
-      userId: { type: 'string' }
+      id: { type: 'string' }
     },
-    required: ['userId']
+    required: ['id']
   },
   body: {
     type: 'object',

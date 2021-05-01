@@ -2,37 +2,37 @@ const { getUserOrdersSchema, getCurrentOrderSchema, updateUserFCMTokenSchema } =
 
 const routes = async (app, _options) => {
   // getUserOrders
-  app.get('/:userId/orders', { schema: getUserOrdersSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
-    const { userId } = req.params;
+  app.get('/:id/orders', { schema: getUserOrdersSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
+    const { id } = req.params;
 
-    if (userId !== req.user?.uid) {
+    if (id !== req.user?.uid) {
       throw app.httpErrors.forbidden();
     }
 
-    return app.ordersService.findAllByUser(userId);
+    return app.ordersService.findAllByUser(id);
   });
 
   // getCurrentOrder
-  app.get('/:userId/current-order', { schema: getCurrentOrderSchema }, async (req, _reply) => {
-    const { userId } = req.params;
+  app.get('/:id/current-order', { schema: getCurrentOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
+    const { id } = req.params;
 
-    // if (userId !== req.user?.uid) {
-    //   throw app.httpErrors.forbidden();
-    // }
-
-    return app.ordersService.findCurrentOrderByUser(userId);
-  });
-
-  // updateUserFCMToken
-  app.put('/:userId/fcm-token', { schema: updateUserFCMTokenSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
-    const { userId } = req.params;
-    const { fcmToken } = req.body;
-
-    if (userId !== req.user?.uid) {
+    if (id !== req.user?.uid) {
       throw app.httpErrors.forbidden();
     }
 
-    return app.usersService.updateFCMToken(userId, fcmToken);
+    return app.ordersService.findCurrentOrderByUser(id);
+  });
+
+  // updateUserFCMToken
+  app.put('/:id/fcm-token', { schema: updateUserFCMTokenSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
+    const { id } = req.params;
+    const { fcmToken } = req.body;
+
+    if (id !== req.user?.uid) {
+      throw app.httpErrors.forbidden();
+    }
+
+    return app.usersService.updateFCMToken(id, fcmToken);
   });
 };
 

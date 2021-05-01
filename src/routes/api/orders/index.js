@@ -1,4 +1,3 @@
-const { OrderType } = require('../../../shared/enums');
 const {
   createOrderSchema,
   getOrderSchema,
@@ -9,21 +8,16 @@ const routes = async (app, _options) => {
   // createOrder
   app.post('/', { schema: createOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
     const userId = req.user?.uid;
-
-    // TODO: move check to service
-    const createOrder = req.body;
-    if (createOrder.orderType === OrderType.table && !createOrder.table) {
-      throw app.httpErrors.badRequest('expected `table` in the request');
-    }
-
-    const newOrderId = await app.ordersService.create(createOrder, userId);
-    return app.ordersService.findOne(newOrderId);
+    const createOrderDTO = req.body;
+    const newOrderId = await app.ordersService.create(createOrderDTO, userId);
+    return app.ordersService.findOne(newOrderId, userId);
   });
 
   // getOrder
-  app.get('/:id', { schema: getOrderSchema }, async (req, _reply) => {
+  app.get('/:id', { schema: getOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
+    const userId = req.user?.uid;
     const { id: orderId } = req.params;
-    return app.ordersService.findOne(orderId);
+    return app.ordersService.findOne(orderId, userId);
   });
 
   // updateOrderState

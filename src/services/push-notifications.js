@@ -32,8 +32,6 @@ class PushNotificationsService {
 
   async notifyOrderStateUpdate(userId, orderId, orderState, restaurantName) {
     const fcmToken = await this.app.usersService.findFCMTokenByUser(userId);
-    const notification = messageNotificationForOrderState(orderState, restaurantName);
-
     const message = {
       token: fcmToken,
       data: {
@@ -49,6 +47,9 @@ class PushNotificationsService {
         }
       }
     };
+
+    // Add title and body if necessary (otherwise it will be a silent notification)
+    const notification = messageNotificationForOrderState(orderState, restaurantName);
     if (notification) {
       message.notification = notification;
     }

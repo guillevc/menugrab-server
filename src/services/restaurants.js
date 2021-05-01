@@ -5,12 +5,12 @@ class RestaurantsService {
     this.app = app;
   }
 
-  async findOne(restaurantId) {
-    const restaurantSnapshot = this.app.firebase.firestore().collection('restaurants').doc(restaurantId);
+  async findOne(id) {
+    const restaurantSnapshot = this.app.firebase.firestore().collection('restaurants').doc(id);
     const restaurantDoc = await restaurantSnapshot.get();
 
     if (!restaurantDoc.exists) {
-      throw this.app.httpErrors.notFound(`Restaurant with id ${restaurantId} not found`);
+      throw this.app.httpErrors.notFound(`Restaurant with id ${id} not found`);
     }
     return {
       id: restaurantDoc.id,

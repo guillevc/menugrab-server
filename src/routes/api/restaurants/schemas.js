@@ -57,9 +57,9 @@ const getRestaurantMenuSchema = {
   params: {
     type: 'object',
     properties: {
-      restaurantId: { type: 'string' }
+      id: { type: 'string' }
     },
-    required: ['restaurantId']
+    required: ['id']
   },
   response: {
     200: {

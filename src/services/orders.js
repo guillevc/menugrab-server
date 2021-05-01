@@ -1,5 +1,5 @@
 const { firestore } = require('firebase-admin');
-const { OrderState } = require('../shared/enums');
+const { OrderState, OrderType } = require('../shared/enums');
 const {
   timestampToISOStringWithoutMillis,
   isoStringWithoutMillisToTimestamp
@@ -10,21 +10,25 @@ class OrdersService {
     this.app = app;
   }
 
-  async create(order, userId) {
-    // check there isn't already an order in progress
+  async create(createOrderDTO, userId) {
+    // Expect table number when making a table order
+    if (createOrderDTO.orderType === OrderType.table && !createOrderDTO.table) {
+      throw this.app.httpErrors.badRequest('Expected `table` in the request when making a table order');
+    }
+
+    // Check there isn't already an order in progress
     const ordersRef = this.app.firebase.firestore().collection('orders');
     const inProgressOrderSnapshot = ordersRef
       .where('userId', '==', userId)
       .where('orderState', 'in', OrderState.inProgressStates);
     const existingOrderInProgressExists = (await inProgressOrderSnapshot.get()).docs.length > 0;
-
     if (existingOrderInProgressExists) {
       throw this.app.httpErrors.conflict('There\'s an order in progress already');
     }
 
     const menuItemsRef = this.app.firebase.firestore().collectionGroup('menuItems');
     const orderItems = [];
-    await order.items.reduce(async (acc, reqMenuItem) => {
+    await createOrderDTO.items.reduce(async (acc, reqMenuItem) => {
       const fetchedMenuItem = await menuItemsRef.where('id', '==', reqMenuItem.menuItemId).limit(1).get();
       const fetchedMenuItemDoc = fetchedMenuItem.docs[0];
       if (fetchedMenuItemDoc) {
@@ -41,9 +45,9 @@ class OrdersService {
 
     const newOrderData = {
       userId,
-      restaurantId: order.restaurantId,
-      orderType: order.orderType,
-      table: order.table,
+      restaurantId: createOrderDTO.restaurantId,
+      orderType: createOrderDTO.orderType,
+      table: createOrderDTO.table,
       orderItems,
       date: firestore.Timestamp.now(),
       orderState: OrderState.pending
@@ -52,12 +56,17 @@ class OrdersService {
     return newOrderDoc.id;
   }
 
-  async findOne(id) {
-    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(id);
+  async findOne(orderId, userId) {
+    const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
     const orderDoc = await orderSnapshot.get();
 
     if (!orderDoc.exists) {
-      throw this.app.httpErrors.notFound(`Order with id ${id} not found`);
+      throw this.app.httpErrors.notFound(`Order with id ${orderId} not found`);
+    }
+
+    const orderUserId = orderDoc.data().userId;
+    if (!userId || orderUserId !== userId) {
+      throw this.app.httpErrors.forbidden();
     }
 
     return this._orderWithRestaurantFromDoc(orderDoc);

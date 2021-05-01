@@ -18,9 +18,9 @@ const routes = async (app, _options) => {
   });
 
   // getRestaurantMenu
-  app.get('/:restaurantId/menu', { schema: getRestaurantMenuSchema }, async (req, _reply) => {
-    const { restaurantId } = req.params;
-    return app.restaurantsService.findMenu(restaurantId);
+  app.get('/:id/menu', { schema: getRestaurantMenuSchema }, async (req, _reply) => {
+    const { id } = req.params;
+    return app.restaurantsService.findMenu(id);
   });
 };
 
