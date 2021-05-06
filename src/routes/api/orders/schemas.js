@@ -51,7 +51,7 @@ const getOrderSchema = {
   tags: ['orders']
 };
 
-const orderStateDTOProperties = {
+const updateOrderStateDTOProperties = {
   orderState: {
     type: 'string',
     enum: Object.values(OrderState)
@@ -69,13 +69,13 @@ const updateOrderStateSchema = {
   },
   body: {
     type: 'object',
-    properties: orderStateDTOProperties,
+    properties: updateOrderStateDTOProperties,
     required: ['orderState']
   },
   response: {
     200: {
       type: 'object',
-      properties: orderStateDTOProperties
+      properties: updateOrderStateDTOProperties
     }
   },
   tags: ['orders']

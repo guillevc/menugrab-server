@@ -30,13 +30,14 @@ class PushNotificationsService {
     this.app = app;
   }
 
-  async notifyOrderStateUpdate(userId, orderId, orderState, restaurantName) {
+  async notifyOrderStateUpdate(userId, orderId, orderState, completionDate, restaurantName) {
     const fcmToken = await this.app.usersService.findFCMTokenByUser(userId);
     const message = {
       token: fcmToken,
       data: {
         ORDER_ID: orderId,
-        ORDER_STATE: orderState
+        ORDER_STATE: orderState,
+        COMPLETION_DATE: completionDate
       },
       apns: {
         payload: {

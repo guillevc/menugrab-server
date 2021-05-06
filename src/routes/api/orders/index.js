@@ -10,7 +10,8 @@ const routes = async (app, _options) => {
     const userId = req.user?.uid;
     const createOrderDTO = req.body;
     const newOrderId = await app.ordersService.create(createOrderDTO, userId);
-    return app.ordersService.findOne(newOrderId, userId);
+    // TODO: check authorization
+    return app.ordersService.findOne(newOrderId);
   });
 
   // getOrder
@@ -27,7 +28,7 @@ const routes = async (app, _options) => {
 
     const { userId, restaurant } = await app.ordersService.findOne(orderId);
     const response = await app.ordersService.updateOrderState(orderId, orderState, completionDateAsISOStringWithoutMillis);
-    app.pushNotificationsService.notifyOrderStateUpdate(userId, orderId, orderState, restaurant.name);
+    app.pushNotificationsService.notifyOrderStateUpdate(userId, orderId, orderState, completionDateAsISOStringWithoutMillis, restaurant.name);
     return response;
   });
 };

@@ -56,17 +56,12 @@ class OrdersService {
     return newOrderDoc.id;
   }
 
-  async findOne(orderId, userId) {
+  async findOne(orderId) {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
     const orderDoc = await orderSnapshot.get();
 
     if (!orderDoc.exists) {
       throw this.app.httpErrors.notFound(`Order with id ${orderId} not found`);
-    }
-
-    const orderUserId = orderDoc.data().userId;
-    if (!userId || orderUserId !== userId) {
-      throw this.app.httpErrors.forbidden();
     }
 
     return this._orderWithRestaurantFromDoc(orderDoc);

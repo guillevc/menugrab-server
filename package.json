@@ -57,8 +57,19 @@
       "global-require": "off",
       "arrow-parens": "off",
       "max-len": "off",
-      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-      "no-underscore-dangle": ["error", { "enforceInMethodNames": false, "allowAfterThis": true }]
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "no-underscore-dangle": [
+        "error",
+        {
+          "enforceInMethodNames": false,
+          "allowAfterThis": true
+        }
+      ]
     },
     "globals": {
       "Atomics": "readonly",
