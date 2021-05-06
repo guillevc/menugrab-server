@@ -11,7 +11,6 @@ module.exports = {
       url: 'https://swagger.io',
       description: 'Find more info here'
     },
-    schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],
     tags: [
