@@ -113,6 +113,30 @@ class OrdersService {
     order.restaurant = await this.app.restaurantsService.findOne(order.restaurantId);
     return order;
   }
+
+  async findRecentOrdersByRestaurantGroupedByState(restaurantId) {
+    const fetchedOrders = await this._findRecentOrdersByRestaurant(restaurantId);
+    const groupedOrders = {};
+    Object.values(OrderState).forEach(orderState => {
+      groupedOrders[orderState] = [];
+    });
+    fetchedOrders.forEach(order => {
+      groupedOrders[order.orderState].push(order);
+    });
+    const groupedOrdersAsArray = Object.entries(groupedOrders)
+      .reduce((acc, [orderState, orders]) => ([...acc, { orderState, orders }]), []);
+    return groupedOrdersAsArray;
+  }
+
+  async _findRecentOrdersByRestaurant(restaurantId) {
+    const ordersRef = this.app.firebase.firestore().collection('orders');
+    // TODO: find last X hours (for completed and cancelled, pending and accepted always show)
+    const ordersSnapshot = await ordersRef.where('restaurantId', '==', restaurantId).orderBy('date', 'desc').get();
+    return ordersSnapshot.docs.map(orderDoc => ({
+      id: orderDoc.id,
+      ...orderDoc.data()
+    }));
+  }
 }
 
 module.exports = OrdersService;

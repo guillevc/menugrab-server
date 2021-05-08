@@ -1,7 +1,9 @@
+const { OrderState } = require('../../../shared/enums');
 const {
   coordinatesProperties,
   restaurantProperties,
-  menuItemProperties
+  menuItemProperties,
+  orderProperties
 } = require('../../../shared/properties');
 
 const getNearbyRestaurantsSchema = {
@@ -70,8 +72,41 @@ const getRestaurantMenuSchema = {
   tags: ['restaurants']
 };
 
+const getRestaurantOrdersGroupedByStateSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' }
+    },
+    required: ['id']
+  },
+  response: {
+    200: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          orderState: {
+            type: 'string',
+            enum: Object.values(OrderState)
+          },
+          orders: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: orderProperties
+            }
+          }
+        }
+      }
+    }
+  },
+  tags: ['restaurants', 'orders']
+};
+
 module.exports = {
   getNearbyRestaurantsSchema,
   getRestaurantSchema,
-  getRestaurantMenuSchema
+  getRestaurantMenuSchema,
+  getRestaurantOrdersGroupedByStateSchema
 };
