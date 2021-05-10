@@ -25,9 +25,9 @@ const routes = async (app, _options) => {
   });
 
   // getRestaurantOrdersGroupedByState
-  app.get('/:id/orders', { schema: getRestaurantOrdersGroupedByStateSchema }, async (req, _reply) => {
+  app.get('/:id/orders/by-state', { schema: getRestaurantOrdersGroupedByStateSchema }, async (req, _reply) => {
     const { id } = req.params;
-    return app.ordersService.findRecentOrdersByRestaurantGroupedByState(id);
+    return app.ordersService.findOrdersByRestaurantGroupedByState(id);
   });
 };
 
