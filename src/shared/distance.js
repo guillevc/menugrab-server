@@ -14,7 +14,7 @@ const robustAcos = value => {
 
 const toRad = value => (value * Math.PI) / 180;
 
-const getDistance = (fromLat, fromLong, toLat, toLong) => {
+export default (fromLat, fromLong, toLat, toLong) => {
   const distance = (
     Math.acos(
       robustAcos(
@@ -28,5 +28,3 @@ const getDistance = (fromLat, fromLong, toLat, toLong) => {
 
   return Math.round(distance) / 1000;
 };
-
-module.exports = { getDistance };

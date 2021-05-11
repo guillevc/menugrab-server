@@ -1,4 +1,4 @@
-const fp = require('fastify-plugin');
+import fp from 'fastify-plugin';
 
 function parseAuthorizationBearer(request) {
   const components = request.headers.authorization?.split(' ');
@@ -8,7 +8,7 @@ function parseAuthorizationBearer(request) {
   return null;
 }
 
-const plugin = async (app, _options, _next) => {
+export default async (app, _options, _next) => {
   app.decorateRequest('user', null);
 
   app.decorate('requireFirebaseAuth', async (request, reply, done) => {
@@ -27,5 +27,3 @@ const plugin = async (app, _options, _next) => {
     request.user = decodedToken;
   });
 };
-
-module.exports = fp(plugin);

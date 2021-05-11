@@ -1,11 +1,11 @@
-const { firestore } = require('firebase-admin');
-const { OrderState, OrderType } = require('../shared/enums');
-const {
+import firebaseAdmin from 'firebase-admin';
+import { OrderState, OrderType } from '../shared/enums';
+import {
   timestampToISOStringWithoutMillis,
   isoStringWithoutMillisToTimestamp
-} = require('../shared/date');
+} from '../shared/date';
 
-class OrdersService {
+export default class OrdersService {
   constructor(app) {
     this.app = app;
   }
@@ -49,7 +49,7 @@ class OrdersService {
       orderType: createOrderDTO.orderType,
       table: createOrderDTO.table,
       orderItems,
-      date: firestore.Timestamp.now(),
+      date: firebaseAdmin.firestore.Timestamp.now(),
       orderState: OrderState.pending
     };
     const newOrderDoc = await ordersRef.add(newOrderData);
@@ -138,5 +138,3 @@ class OrdersService {
     }));
   }
 }
-
-module.exports = OrdersService;

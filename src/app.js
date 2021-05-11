@@ -1,4 +1,4 @@
-const Fastify = require('fastify');
+import Fastify from 'fastify';
 
 // Loading order of your plugins
 // └── plugins (from the Fastify ecosystem)
@@ -7,14 +7,14 @@ const Fastify = require('fastify');
 // └── hooks
 // └── your services
 
-const buildApp = async () => {
+export default async () => {
   const app = Fastify({
     logger: { prettyPrint: true }
   });
 
   // fastify plugins
-  await app.register(require('fastify-sensible'));
-  await app.register(require('fastify-env'), {
+  await app.register(import('fastify-sensible'));
+  await app.register(import('fastify-env'), {
     confKey: 'env',
     dotenv: 'true',
     schema: {
@@ -28,33 +28,33 @@ const buildApp = async () => {
       }
     }
   });
-  await app.register(require('fastify-cors'));
-  await app.register(require('fastify-healthcheck'));
-  await app.register(require('fastify-swagger'), require('./swagger-config'));
+  await app.register(import('fastify-cors'));
+  await app.register(import('fastify-healthcheck'));
+  await app.register(import('fastify-swagger'), import('./swagger-config'));
   if (app.env.FIREBASE_CERT_FILE_BASE64) {
-    await app.register(require('@now-ims/fastify-firebase'), {
+    await app.register(import('@now-ims/fastify-firebase'), {
       cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
     });
     app.firebase.firestore().settings({ ignoreUndefinedProperties: true });
   }
 
   // inject/decorate with persistance services
-  const RestaurantsService = require('./services/restaurants');
+  const RestaurantsService = (await import('./services/restaurants')).default;
   await app.decorate('restaurantsService', new RestaurantsService(app));
-  const OrdersService = require('./services/orders');
+  const OrdersService = (await import('./services/orders')).default;
   await app.decorate('ordersService', new OrdersService(app));
-  const UsersService = require('./services/users');
+  const UsersService = (await import('./services/users')).default;
   await app.decorate('usersService', new UsersService(app));
-  const PushNotificationsService = require('./services/push-notifications');
+  const PushNotificationsService = (await import('./services/push-notifications')).default;
   await app.decorate('pushNotificationsService', new PushNotificationsService(app));
 
   // custom plugins
-  await app.register(require('./plugins/firebase-auth-plugin'));
+  await app.register(import('./plugins/firebase-auth-plugin'));
 
   // routes service
-  await app.register(require('./routes/api'), { prefix: 'api' });
+  const routes = (await import('./routes/api')).default;
+  console.log(routes);
+  await app.register(routes, { prefix: 'api' });
 
   return app;
 };
-
-module.exports = { buildApp };

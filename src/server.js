@@ -1,5 +1,6 @@
+import buildApp from './app';
+
 const start = async () => {
-  const { buildApp } = require('./app');
   const app = await buildApp();
   try {
     await app.listen(app.env.PORT, '0.0.0.0');

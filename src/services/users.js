@@ -1,4 +1,4 @@
-class UsersService {
+export default class UsersService {
   constructor(app) {
     this.app = app;
   }
@@ -19,5 +19,3 @@ class UsersService {
     return data;
   }
 }
-
-module.exports = UsersService;

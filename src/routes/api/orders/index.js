@@ -1,10 +1,10 @@
-const {
+import {
   createOrderSchema,
   getOrderSchema,
   updateOrderStateSchema
-} = require('./schemas');
+} from './schemas';
 
-const routes = async (app, _options) => {
+export default async (app, _options) => {
   // createOrder
   app.post('/', { schema: createOrderSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
     const userId = req.user?.uid;
@@ -32,5 +32,3 @@ const routes = async (app, _options) => {
     return response;
   });
 };
-
-module.exports = routes;

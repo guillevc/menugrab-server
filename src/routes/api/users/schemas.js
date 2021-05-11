@@ -1,6 +1,6 @@
-const { orderProperties } = require('../../../shared/properties');
+import { orderProperties } from '../../../shared/properties';
 
-const getUserOrdersSchema = {
+export const getUserOrdersSchema = {
   params: {
     type: 'object',
     properties: {
@@ -20,7 +20,7 @@ const getUserOrdersSchema = {
   tags: ['users', 'orders']
 };
 
-const getCurrentOrderSchema = {
+export const getCurrentOrderSchema = {
   params: {
     type: 'object',
     properties: {
@@ -43,7 +43,7 @@ const fcmTokenDTOProperties = {
   }
 };
 
-const updateUserFCMTokenSchema = {
+export const updateUserFCMTokenSchema = {
   params: {
     type: 'object',
     properties: {
@@ -62,10 +62,4 @@ const updateUserFCMTokenSchema = {
     }
   },
   tags: ['users']
-};
-
-module.exports = {
-  getUserOrdersSchema,
-  getCurrentOrderSchema,
-  updateUserFCMTokenSchema
 };

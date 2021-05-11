@@ -1,12 +1,12 @@
-const { OrderState } = require('../../../shared/enums');
-const {
+import { OrderState } from '../../../shared/enums';
+import {
   coordinatesProperties,
   restaurantProperties,
   menuItemProperties,
   orderProperties
-} = require('../../../shared/properties');
+} from '../../../shared/properties';
 
-const getNearbyRestaurantsSchema = {
+export const getNearbyRestaurantsSchema = {
   querystring: {
     type: 'object',
     properties: coordinatesProperties
@@ -23,7 +23,7 @@ const getNearbyRestaurantsSchema = {
   tags: ['restaurants']
 };
 
-const getRestaurantSchema = {
+export const getRestaurantSchema = {
   params: {
     type: 'object',
     properties: {
@@ -55,7 +55,7 @@ const menuProperties = {
   }
 };
 
-const getRestaurantMenuSchema = {
+export const getRestaurantMenuSchema = {
   params: {
     type: 'object',
     properties: {
@@ -72,7 +72,7 @@ const getRestaurantMenuSchema = {
   tags: ['restaurants']
 };
 
-const getRestaurantOrdersGroupedByStateSchema = {
+export const getRestaurantOrdersGroupedByStateSchema = {
   params: {
     type: 'object',
     properties: {
@@ -102,11 +102,4 @@ const getRestaurantOrdersGroupedByStateSchema = {
     }
   },
   tags: ['restaurants', 'orders']
-};
-
-module.exports = {
-  getNearbyRestaurantsSchema,
-  getRestaurantSchema,
-  getRestaurantMenuSchema,
-  getRestaurantOrdersGroupedByStateSchema
 };

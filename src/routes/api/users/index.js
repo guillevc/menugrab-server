@@ -1,6 +1,6 @@
-const { getUserOrdersSchema, getCurrentOrderSchema, updateUserFCMTokenSchema } = require('./schemas');
+import { getUserOrdersSchema, getCurrentOrderSchema, updateUserFCMTokenSchema } from './schemas';
 
-const routes = async (app, _options) => {
+export default async (app, _options) => {
   // getUserOrders
   app.get('/:id/orders', { schema: getUserOrdersSchema, preValidation: [app.requireFirebaseAuth] }, async (req, _reply) => {
     const { id } = req.params;
@@ -35,5 +35,3 @@ const routes = async (app, _options) => {
     return app.usersService.updateFCMToken(id, fcmToken);
   });
 };
-
-module.exports = routes;

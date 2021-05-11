@@ -1,11 +1,11 @@
-const {
+import {
   getNearbyRestaurantsSchema,
   getRestaurantSchema,
   getRestaurantMenuSchema,
   getRestaurantOrdersGroupedByStateSchema
-} = require('./schemas');
+} from './schemas';
 
-const routes = async (app, _options) => {
+export default async (app, _options) => {
   // getNearbyRestaurants
   app.get('/', { schema: getNearbyRestaurantsSchema }, async (req, _reply) => {
     const { latitude, longitude } = req.query;
@@ -30,5 +30,3 @@ const routes = async (app, _options) => {
     return app.ordersService.findOrdersByRestaurantGroupedByState(id);
   });
 };
-
-module.exports = routes;

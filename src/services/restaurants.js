@@ -1,6 +1,6 @@
-const { getDistance } = require('../shared/distance');
+import getDistance from '../shared/distance';
 
-class RestaurantsService {
+export default class RestaurantsService {
   constructor(app) {
     this.app = app;
   }
@@ -53,5 +53,3 @@ class RestaurantsService {
     return { menuItemCategories };
   }
 }
-
-module.exports = RestaurantsService;

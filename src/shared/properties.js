@@ -1,11 +1,11 @@
-const { OrderType, OrderState } = require('./enums');
+import { OrderType, OrderState } from './enums';
 
-const coordinatesProperties = {
+export const coordinatesProperties = {
   latitude: { type: 'number' },
   longitude: { type: 'number' }
 };
 
-const restaurantProperties = {
+export const restaurantProperties = {
   id: { type: 'string' },
   name: { type: 'string' },
   imageURL: { type: 'string' },
@@ -28,7 +28,7 @@ const restaurantProperties = {
   }
 };
 
-const menuItemProperties = {
+export const menuItemProperties = {
   id: { type: 'string' },
   name: { type: 'string' },
   description: { type: 'string' },
@@ -43,7 +43,7 @@ const orderItemProperties = {
   }
 };
 
-const orderProperties = {
+export const orderProperties = {
   id: { type: 'string' },
   date: { type: 'string' },
   orderType: {
@@ -64,11 +64,4 @@ const orderProperties = {
     type: 'array',
     items: orderItemProperties
   }
-};
-
-module.exports = {
-  coordinatesProperties,
-  restaurantProperties,
-  menuItemProperties,
-  orderProperties
 };

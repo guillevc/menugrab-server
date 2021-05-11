@@ -1,4 +1,4 @@
-const { OrderState } = require('../shared/enums');
+import { OrderState } from '../shared/enums';
 
 const messageNotificationForOrderState = (orderState, restaurantName) => {
   switch (orderState) {
@@ -25,7 +25,7 @@ const messageNotificationForOrderState = (orderState, restaurantName) => {
   }
 };
 
-class PushNotificationsService {
+export default class PushNotificationsService {
   constructor(app) {
     this.app = app;
   }
@@ -58,5 +58,3 @@ class PushNotificationsService {
     await this.app.firebase.messaging().send(message);
   }
 }
-
-module.exports = PushNotificationsService;
