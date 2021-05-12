@@ -132,10 +132,17 @@ class OrdersService {
     const ordersRef = this.app.firebase.firestore().collection('orders');
     // TODO: find last X hours (for completed and cancelled, pending and accepted always show)
     const ordersSnapshot = await ordersRef.where('restaurantId', '==', restaurantId).orderBy('date', 'desc').get();
-    return ordersSnapshot.docs.map(orderDoc => ({
-      id: orderDoc.id,
-      ...orderDoc.data()
-    }));
+    return ordersSnapshot.docs.map(orderDoc => {
+      const order = {
+        id: orderDoc.id,
+        ...orderDoc.data()
+      };
+      order.date = timestampToISOStringWithoutMillis(order.date);
+      if (order.completionDate) {
+        order.completionDate = timestampToISOStringWithoutMillis(order.completionDate);
+      }
+      return order;
+    });
   }
 }
 
