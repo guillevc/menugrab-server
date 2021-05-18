@@ -8,5 +8,5 @@ test('healthcheck', async (t) => {
     url: '/health'
   });
 
-  t.strictEqual(response.statusCode, 200, 'returns a status code of 200');
+  t.equal(response.statusCode, 200, 'returns a status code of 200');
 });
