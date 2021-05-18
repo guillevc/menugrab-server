@@ -84,7 +84,8 @@ const updateRestaurantMenuSchema = {
     type: 'object',
     properties: {
       menuProperties
-    }
+    },
+    required: ['menuItemCategories']
   },
   response: {
     200: {
