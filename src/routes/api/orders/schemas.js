@@ -26,7 +26,7 @@ const createOrderSchema = {
     required: ['restaurantId', 'orderType', 'items']
   },
   response: {
-    200: {
+    201: {
       type: 'object',
       properties: orderProperties
     }
