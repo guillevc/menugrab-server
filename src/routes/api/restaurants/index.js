@@ -1,6 +1,7 @@
 const {
   getNearbyRestaurantsSchema,
   getRestaurantSchema,
+  updateRestaurantSchema,
   updateRestaurantMenuSchema,
   getRestaurantMenuSchema,
   getRestaurantOrdersGroupedByStateSchema
@@ -17,6 +18,13 @@ const routes = async (app, _options) => {
   app.get('/:id', { schema: getRestaurantSchema }, async (req, _reply) => {
     const { id } = req.params;
     return app.restaurantsService.findOne(id);
+  });
+
+  // updateRestaurant
+  app.put('/:id', { schema: updateRestaurantSchema }, async (req, _reply) => {
+    const { id } = req.params;
+    const newRestaurant = req.body;
+    return app.restaurantsService.update(id, newRestaurant);
   });
 
   // getRestaurantMenu

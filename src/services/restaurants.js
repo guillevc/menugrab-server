@@ -1,4 +1,5 @@
 const { getDistance } = require('../shared/distance');
+const { coordinatesToGeoPoint } = require('../shared/geopoint');
 
 class RestaurantsService {
   constructor(app) {
@@ -15,6 +16,16 @@ class RestaurantsService {
       id: restaurantDoc.id,
       ...restaurantDoc.data()
     };
+  }
+
+  async update(id, newRestaurant) {
+    const restaurantRef = await this.app.firebase.firestore().collection('restaurants').doc(id);
+    const newRestaurantData = { ...newRestaurant };
+    delete newRestaurantData.id;
+    if (newRestaurantData.coordinates) {
+      newRestaurantData.coordinates = coordinatesToGeoPoint(newRestaurantData.coordinates);
+    }
+    return restaurantRef.set(newRestaurantData, { merge: true });
   }
 
   async findAllNearby(lat, long) {

@@ -40,6 +40,25 @@ const getRestaurantSchema = {
   tags: ['restaurants']
 };
 
+const updateRestaurantSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' }
+    },
+    required: ['id']
+  },
+  body: {
+    type: 'object',
+    properties: restaurantProperties
+  },
+  200: {
+    type: 'object',
+    properties: restaurantProperties
+  },
+  tags: ['restaurants']
+};
+
 const menuItemCategoryProperties = {
   name: { type: 'string' },
   menuItems: {
@@ -131,6 +150,7 @@ const getRestaurantOrdersGroupedByStateSchema = {
 module.exports = {
   getNearbyRestaurantsSchema,
   getRestaurantSchema,
+  updateRestaurantSchema,
   getRestaurantMenuSchema,
   updateRestaurantMenuSchema,
   getRestaurantOrdersGroupedByStateSchema
