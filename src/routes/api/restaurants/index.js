@@ -1,6 +1,7 @@
 const {
   getNearbyRestaurantsSchema,
   getRestaurantSchema,
+  updateRestaurantMenuSchema,
   getRestaurantMenuSchema,
   getRestaurantOrdersGroupedByStateSchema
 } = require('./schemas');
@@ -22,6 +23,13 @@ const routes = async (app, _options) => {
   app.get('/:id/menu', { schema: getRestaurantMenuSchema }, async (req, _reply) => {
     const { id } = req.params;
     return app.restaurantsService.findMenu(id);
+  });
+
+  // updateRestaurantMenu
+  app.put('/:id/menu', { schema: updateRestaurantMenuSchema }, async (req, _reply) => {
+    const { id } = req.params;
+    const menu = req.body;
+    return app.restaurantsService.updateMenu(id, menu);
   });
 
   // getRestaurantOrdersGroupedByState
