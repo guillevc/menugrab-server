@@ -55,48 +55,49 @@ class RestaurantsService {
   async updateMenu(restaurantId, newMenu) {
     const categoriesSubcollectionRef = this.app.firebase.firestore().collection('restaurants').doc(restaurantId).collection('menuItemCategories');
 
-    // Delete menu
-    const categoriesSnapshot = await categoriesSubcollectionRef.orderBy('__name__').get();
-    const categoriesRefs = categoriesSnapshot.docs.reduce((acc, doc) => [...acc, doc.ref], []);
+    await this.app.firebase.firestore().runTransaction(async (t) => {
+      // Delete menu
+      const categoriesSnapshot = await t.get(categoriesSubcollectionRef);
+      const categoriesRefs = categoriesSnapshot.docs.reduce((acc, doc) => [...acc, doc.ref], []);
 
-    const menuItemsRefs = [];
-    await categoriesRefs.reduce(async (memo, categoryRef) => {
-      await memo;
-      const categoryMenuItemsSubcollectionRef = categoryRef.collection('menuItems');
-      const categoryMenuItemsSnapshot = await categoryMenuItemsSubcollectionRef.orderBy('__name__').get();
-      categoryMenuItemsSnapshot.docs.forEach((doc) => {
-        menuItemsRefs.push(doc.ref);
-      });
-    }, undefined);
-
-    const batch = this.app.firebase.firestore().batch();
-    [...menuItemsRefs, ...categoriesRefs].forEach(ref => {
-      batch.delete(ref);
-    });
-
-    await batch.commit();
-
-    // Add new menu
-    await newMenu.menuItemCategories.reduce(async (categoryMemo, category, index) => {
-      await categoryMemo;
-      const newCategoryData = {
-        name: category.name,
-        order: index
-      };
-      const newCategoryRef = await categoriesSubcollectionRef.add(newCategoryData);
-
-      const categoryMenuItemsSubcollectionRef = newCategoryRef.collection('menuItems');
-      await category.menuItems.reduce(async (menuItemMemo, menuItem) => {
-        await menuItemMemo;
-        const newMenuItemData = {
-          name: menuItem.name,
-          description: menuItem.description,
-          price: menuItem.price
-        };
-        const newMenuItemRef = await categoryMenuItemsSubcollectionRef.add(newMenuItemData);
-        await newMenuItemRef.set({ id: newMenuItemRef.id }, { merge: true });
+      const menuItemsRefs = [];
+      await categoriesRefs.reduce(async (memo, categoryRef) => {
+        await memo;
+        const categoryMenuItemsSubcollectionRef = categoryRef.collection('menuItems');
+        const categoryMenuItemsSnapshot = await t.get(categoryMenuItemsSubcollectionRef);
+        categoryMenuItemsSnapshot.docs.forEach((doc) => {
+          menuItemsRefs.push(doc.ref);
+        });
       }, undefined);
-    }, undefined);
+
+      [...menuItemsRefs, ...categoriesRefs].forEach(ref => {
+        t.delete(ref);
+      });
+
+      // Add new menu
+      await newMenu.menuItemCategories.reduce(async (categoryMemo, category, index) => {
+        await categoryMemo;
+        const newCategoryData = {
+          name: category.name,
+          order: index
+        };
+        const newCategoryRef = await categoriesSubcollectionRef.doc();
+        t.set(newCategoryRef, newCategoryData);
+
+        const categoryMenuItemsSubcollectionRef = newCategoryRef.collection('menuItems');
+        await category.menuItems.reduce(async (menuItemMemo, menuItem) => {
+          await menuItemMemo;
+          const newMenuItemRef = await categoryMenuItemsSubcollectionRef.doc();
+          const newMenuItemData = {
+            id: newMenuItemRef.id,
+            name: menuItem.name,
+            description: menuItem.description,
+            price: menuItem.price
+          };
+          await t.set(newMenuItemRef, newMenuItemData);
+        }, undefined);
+      }, undefined);
+    });
 
     // Return updated menu data
     return this.findMenu(restaurantId);
