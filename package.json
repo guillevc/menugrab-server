@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "npm run lint && tap --reporter=list",
+    "test": "npm run lint && tap",
+    "report": "npx nyc report --reporter=lcov",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },

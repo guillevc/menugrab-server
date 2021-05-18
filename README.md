@@ -1,4 +1,5 @@
 ![ci](https://github.com/guillevc/menugrab-server/workflows/ci/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/guillevc/menugrab-server/branch/master/graph/badge.svg?token=KBA3MO8QZ4)](https://codecov.io/gh/guillevc/menugrab-server)
 
 # Menugrab server
 
