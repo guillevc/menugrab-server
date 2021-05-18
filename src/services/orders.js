@@ -83,7 +83,7 @@ class OrdersService {
     const orderSnapshot = this.app.firebase.firestore().collection('orders').doc(orderId);
     const newOrderData = {
       orderState,
-      completionDate: isoStringWithoutMillisToTimestamp(completionDateAsISOStringWithoutMillis)
+      completionDate: completionDateAsISOStringWithoutMillis ? isoStringWithoutMillisToTimestamp(completionDateAsISOStringWithoutMillis) : undefined
     };
     await orderSnapshot.set(newOrderData, { merge: true });
     return { orderState, completionDate: completionDateAsISOStringWithoutMillis };
