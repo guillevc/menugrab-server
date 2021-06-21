@@ -128,6 +128,10 @@ class OrdersService {
     return groupedOrdersAsArray;
   }
 
+  async findOrdersByRestaurant(restaurantId) {
+    return this._findOrdersByRestaurant(restaurantId);
+  }
+
   async _findOrdersByRestaurant(restaurantId) {
     const ordersRef = this.app.firebase.firestore().collection('orders');
     // TODO: find last X hours (for completed and cancelled, pending and accepted always show)

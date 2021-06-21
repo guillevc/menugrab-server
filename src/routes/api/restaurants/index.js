@@ -4,7 +4,8 @@ const {
   updateRestaurantSchema,
   updateRestaurantMenuSchema,
   getRestaurantMenuSchema,
-  getRestaurantOrdersGroupedByStateSchema
+  getRestaurantOrdersGroupedByStateSchema,
+  getRestaurantOrders
 } = require('./schemas');
 
 const routes = async (app, _options) => {
@@ -44,6 +45,12 @@ const routes = async (app, _options) => {
   app.get('/:id/orders/by-state', { schema: getRestaurantOrdersGroupedByStateSchema }, async (req, _reply) => {
     const { id } = req.params;
     return app.ordersService.findOrdersByRestaurantGroupedByState(id);
+  });
+
+  // getRestaurantOrders
+  app.get('/:id/orders', { schema: getRestaurantOrders }, async (req, _reply) => {
+    const { id } = req.params;
+    return app.ordersService.findOrdersByRestaurant(id);
   });
 };
 
