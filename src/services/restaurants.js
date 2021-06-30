@@ -30,13 +30,14 @@ class RestaurantsService {
 
   async findAllNearby(lat, long) {
     const restaurantsSnapshot = await this.app.firebase.firestore().collection('restaurants').get();
-    return restaurantsSnapshot.docs.map(doc => {
+    const restaurants = restaurantsSnapshot.docs.map(doc => {
       const restaurant = { id: doc.id, ...doc.data() };
       if (lat && long) {
         restaurant.distance = getDistance(lat, long, restaurant.coordinates.latitude, restaurant.coordinates.longitude);
       }
       return restaurant;
     });
+    return restaurants.sort((a, b) => a.distance - b.distance);
   }
 
   async findMenu(restaurantId) {
