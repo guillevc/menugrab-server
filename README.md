@@ -1,16 +1,16 @@
+# Menugrab server
+
 ![ci](https://github.com/guillevc/menugrab-server/workflows/ci/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/guillevc/menugrab-server/branch/master/graph/badge.svg?token=KBA3MO8QZ4)](https://codecov.io/gh/guillevc/menugrab-server)
-
-# Menugrab server
 
 This repo contains the backend component of the __Menugrab iOS App__ (https://github.com/guillevc/menugrab-ios).
 
 ## Details
 
-Here are some small implementation details of `menugrab-server`. For a description of the full app, with all its features, refer to the [iOS App readme](https://github.com/guillevc/menugrab-ios).
+Here are some small implementation details of `menugrab-server`. For a description of the full platform, with all its features, refer to the [iOS App readme](https://github.com/guillevc/menugrab-ios).
 
 - Node.js REST API using Fastify.
-- Uses Firestore as a database, so it could be considered a middleware.
+- Firestore as a database.
 - Integrates with [Firebase Authentication Admin](https://firebase.google.com/docs/auth/admin) aswell, allowing authorization from the iOS app through a `Authorization: Bearer <token>` header structure holding a Firebase Authentication ID token.
 - Route-specific protection for authenticated users.
 - Integration with Swagger, which generates API documentation based off of defined routes and schemas. It can be accessed trough the `/docs` route.
@@ -18,7 +18,7 @@ Here are some small implementation details of `menugrab-server`. For a descripti
 ## Requirements
 
 - Node.js v14.x
-- Firebase project for Firestore and Firebase Authentication.
+- Firebase project for Firestore, Firebase Authentication and Firebase Cloud Messaging.
 
 ## Quick start
 

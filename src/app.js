@@ -36,6 +36,8 @@ const buildApp = async () => {
       cert: JSON.parse(Buffer.from(app.env.FIREBASE_CERT_FILE_BASE64, 'base64').toString('ascii'))
     });
     app.firebase.firestore().settings({ ignoreUndefinedProperties: true });
+  } else {
+    throw Error('Missing Firebase cert file')
   }
 
   // inject/decorate with persistance services
